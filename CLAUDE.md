@@ -80,10 +80,50 @@ Has its own `.claude/CLAUDE.md` — read that when working inside this project.
 
 ---
 
+---
+
+### Chatbot (`chatbot/`)
+
+Streamlit PDF Q&A app using LangChain + OpenAI. Loads `.pkl` vector stores (FAISS) from pre-processed PDFs. Own `venv/`.
+
+```bash
+cd chatbot
+source venv/bin/activate
+streamlit run app.py
+```
+
+Env: `OPENAI_API_KEY`
+
+---
+
+### Talk to Santa (`talktosanta/`)
+
+Express/Node.js + MongoDB app. JWT auth, QR code generation. Vanilla JS frontend in `frontend/`. No build step — static files served by Express.
+
+```bash
+cd talktosanta
+npm install
+node script.js
+```
+
+---
+
+### Mofu-chan (`Mofu-chan/`)
+
+SwiftUI iOS app. Open `Mofu-chan.xcodeproj` in Xcode. Main files: `ContentView.swift`, `AudioManager.swift`.
+
+---
+
+### claude-howto (`claude-howto/`)
+
+Documentation/tutorial project for Claude Code features (slash commands, memory, skills, subagents, MCP, hooks). Multilingual (`ja/`, `uk/`, `vi/`, `zh/`). Read-only reference — no build step.
+
+---
+
 ## Python environment
 
-Root `.venv/` contains: `anthropic`, `python-telegram-bot`, `apscheduler`, `requests`.  
-The language bots and zen-substack scripts use this venv.  
+Root `.venv/` — used by language bots and zen-substack. Contains: `anthropic`, `python-telegram-bot`, `apscheduler`, `requests`.  
+Root `venv/` — legacy venv (chatbot uses its own `chatbot/venv/`).  
 `apple-mail-mcp/` manages its own venv via `uv`.
 
 ## Model usage across projects
@@ -93,3 +133,4 @@ The language bots and zen-substack scripts use this venv.
 | italian_bot.py | `claude-sonnet-4-6` |
 | japanese_bot.py | `claude-sonnet-4-6` |
 | zen-substack | `claude-opus-4-8` |
+| chatbot | OpenAI (not Claude) |
