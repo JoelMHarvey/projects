@@ -1,4 +1,5 @@
 import { Knife, Hammer, Needle, Ruler } from "./ToolIcons";
+import { MemberGate } from "@/components/MemberGate";
 import type { ReactNode } from "react";
 
 function StepHeader({ pill, title }: { pill: string; title: string }) {
@@ -192,7 +193,8 @@ export function CourseContent() {
 
       <hr className="my-10 border-parchment" />
 
-      {/* STEP 2 */}
+      {/* STEP 2 — members only */}
+      <MemberGate step={2}>
       <section id="step-2">
         <StepHeader pill="Step 02" title="The essential techniques" />
         <P>
@@ -215,10 +217,12 @@ export function CourseContent() {
           first.
         </Callout>
       </section>
+      </MemberGate>
 
       <hr className="my-10 border-parchment" />
 
-      {/* STEP 3 */}
+      {/* STEP 3 — members only */}
+      <MemberGate step={3}>
       <section id="step-3">
         <StepHeader pill="Step 03" title="The project: a slim bifold wallet" />
         <P>
@@ -260,10 +264,12 @@ export function CourseContent() {
           first.
         </Callout>
       </section>
+      </MemberGate>
 
       <hr className="my-10 border-parchment" />
 
-      {/* STEP 4 */}
+      {/* STEP 4 — members only */}
+      <MemberGate step={4}>
       <section id="step-4">
         <StepHeader pill="Step 04" title="Your pathway to mastery" />
         <P>
@@ -308,6 +314,7 @@ export function CourseContent() {
           </li>
         </ul>
       </section>
+      </MemberGate>
     </article>
   );
 }

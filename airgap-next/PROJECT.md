@@ -51,27 +51,30 @@ Next.js 16, TypeScript, Tailwind v4, framer-motion. **Requires Node ≥ 22** (`n
 
 ## To reach the full end state
 
-### Priority 1 — Deploy (hours)
+### ✅ Priority 1 — Deploy — DONE
 
-- [ ] **Add `.nvmrc`** — `echo "22" > /Users/joelharvey/Projects/airgap-next/.nvmrc` so Node version auto-selects
-- [ ] **Deploy to Vercel** — `cd airgap-next && npx vercel` — free tier, auto-deploys on git push
-- [ ] **Connect domain** — Point `airgap.life` DNS to Vercel: add CNAME record `@ → cname.vercel-dns.com` in your registrar
-- [ ] **Create git repo** — `git init && git remote add origin <your-repo>` so Vercel can watch for changes
+- [x] Deployed to Netlify (`netlify.toml` added, Node 22 pinned)
+- [x] `airgap.life` domain connected
 
-### Priority 2 — Authentication & Membership (1–3 days)
+### ✅ Priority 2 — Authentication & Membership — DONE (needs env vars)
 
-The £8/month membership needs a payment + auth layer. Recommended stack:
+**Code complete. Activate by filling in `.env.local` (copy from `.env.local.example`).**
 
-- **[Stripe](https://stripe.com)** — subscriptions, billing portal, webhooks
-- **[Clerk](https://clerk.com)** — auth (free up to 10k users, Next.js native, works with Stripe)
-- Flow: user signs up → Stripe checkout → webhook creates "member" role in Clerk → member-only pages check `user.publicMetadata.role === 'member'`
+- [x] `@clerk/nextjs` + `stripe` installed
+- [x] `ClerkProvider` wraps layout
+- [x] `/sign-in` and `/sign-up` pages
+- [x] `src/proxy.ts` (Next.js 16 middleware) — protects `/account/*`
+- [x] `/api/checkout` — creates Stripe Checkout session
+- [x] `/api/webhooks/stripe` — sets `publicMetadata.membershipStatus` in Clerk on subscription events
+- [x] `MemberGate` component — blurs steps 2/3/4 for non-members, shows checkout CTA
+- [x] Nav shows `UserButton` when signed in, Join/Sign in when not
+- [x] Leatherwork course: step 1 free, steps 2–4 gated
 
-Steps:
-- [ ] `npm install @clerk/nextjs stripe`
-- [ ] Wrap `layout.tsx` in `<ClerkProvider>`
-- [ ] Create `/api/webhooks/stripe` route to handle `customer.subscription.created` / `deleted`
-- [ ] Add `middleware.ts` to protect `/courses/[slug]` for members-only content
-- [ ] Add free-tier gate: show first step of any course free, lock steps 2–4 behind membership
+**To activate:**
+1. Create [Clerk app](https://clerk.com) → copy keys into `.env.local`
+2. Create [Stripe](https://stripe.com) account → create £8/month product → copy `STRIPE_SECRET_KEY` + `STRIPE_PRICE_ID`
+3. Add Netlify env vars (Site settings → Environment variables) — same keys as `.env.local`
+4. Add Stripe webhook: `https://www.airgap.life/api/webhooks/stripe` → events: `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted` → copy `STRIPE_WEBHOOK_SECRET` into Netlify env vars
 
 ### Priority 3 — Course pages (2–5 days per course)
 

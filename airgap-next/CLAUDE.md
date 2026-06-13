@@ -73,6 +73,14 @@ Course data (title, icon, tag, price, desc, href) is currently hardcoded in `src
 ### Utility
 `src/lib/utils.ts` exports `cn()` (clsx + tailwind-merge). Use it for conditional class merging.
 
+## Auth & membership
+
+- **Clerk v7** — `useUser()` hook for client components; `auth()` (async) from `@clerk/nextjs/server` for server/API routes. `SignedIn`/`SignedOut` components do NOT exist in v7 — use `useUser()` conditionally.
+- **Membership check** — `user.publicMetadata.membershipStatus === "active"` (set by Stripe webhook). Use `<MemberGate step={N}>` to lock content.
+- **Route protection** — `src/proxy.ts` (Next.js 16 calls it `proxy`, not `middleware`). Account pages protected; course gating is component-level via `MemberGate`.
+- **Stripe** — instantiate `new Stripe(key)` inside route handlers, never at module level (env vars absent at build time).
+- **Env vars** — see `.env.local.example`. Add same vars to Netlify site settings for production.
+
 ## Key constraints
 
 - `"use client"` required on any component using hooks or framer-motion

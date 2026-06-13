@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Scissors } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 import { Reveal, RevealGroup, revealItemVariants } from "./Reveal";
 
 /* ============ MANIFESTO ============ */
@@ -192,6 +194,33 @@ export function Pathway() {
 }
 
 /* ============ MEMBERSHIP ============ */
+function CheckoutButton() {
+  const [loading, setLoading] = useState(false);
+  const { isSignedIn } = useUser();
+
+  async function handleCheckout() {
+    if (!isSignedIn) {
+      window.location.href = "/sign-up";
+      return;
+    }
+    setLoading(true);
+    const res = await fetch("/api/checkout", { method: "POST" });
+    const { url } = await res.json();
+    window.location.href = url;
+  }
+
+  return (
+    <motion.button
+      whileHover={{ y: -2 }}
+      disabled={loading}
+      onClick={handleCheckout}
+      className="w-full cursor-pointer rounded-sm bg-rust py-3.5 font-ui text-sm font-medium text-paper transition-colors hover:bg-bark disabled:opacity-60"
+    >
+      {loading ? "Redirecting…" : "Join for £8/month"}
+    </motion.button>
+  );
+}
+
 export function Membership() {
   return (
     <section
@@ -278,12 +307,7 @@ export function Membership() {
                   </li>
                 ))}
               </ul>
-              <motion.button
-                whileHover={{ y: -2 }}
-                className="w-full cursor-pointer rounded-sm bg-rust py-3.5 font-ui text-sm font-medium text-paper transition-colors hover:bg-bark"
-              >
-                Join for £8/month
-              </motion.button>
+              <CheckoutButton />
             </div>
           </Reveal>
         </div>
