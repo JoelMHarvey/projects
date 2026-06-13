@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "airgap-next",
+      "runtimeExecutable": "/Users/joelharvey/.nvm/versions/node/v22.22.0/bin/npm",
+      "runtimeArgs": ["run", "dev", "--", "-p", "3700"],
+      "port": 3700
+    }
+  ]
+}

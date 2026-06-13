@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindfulPath — Learn to Meditate</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['Lora', 'Georgia', 'serif'],
+            body: ['Raleway', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      background-color: #060918;
+      color: #F0EEFF;
+      font-family: 'Raleway', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Lora', Georgia, serif; }
+
+    /* Aurora background */
+    .aurora-bg {
+      background: linear-gradient(135deg, #060918 0%, #0D1030 25%, #1a0a3e 50%, #0a1a3e 75%, #060918 100%);
+      background-size: 400% 400%;
+      animation: auroraShift 18s ease-in-out infinite;
+    }
+    @keyframes auroraShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-hover:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(167, 139, 250, 0.25);
+    }
+
+    /* Glow */
+    .glow-purple { box-shadow: 0 0 30px rgba(139, 92, 246, 0.25), 0 0 60px rgba(139, 92, 246, 0.1); }
+    .glow-purple:hover { box-shadow: 0 0 40px rgba(139, 92, 246, 0.4), 0 0 80px rgba(139, 92, 246, 0.15); }
+    .text-glow { text-shadow: 0 0 40px rgba(167, 139, 250, 0.45); }
+
+    /* Ambient orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.12;
+      pointer-events: none;
+      animation: floatOrb 10s ease-in-out infinite;
+    }
+    @keyframes floatOrb {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-18px) scale(1.05); }
+    }
+
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #A78BFA, #818CF8, #93C5FD);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Nav link hover */
+    .nav-link { transition: color 0.2s ease; }
+    .nav-link:hover { color: #A78BFA; }
+
+    /* Tab active */
+    .tab-btn { border: 1px solid transparent; transition: all 0.2s ease; }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(99,102,241,0.25)) !important;
+      border-color: rgba(167,139,250,0.35) !important;
+      color: #A78BFA !important;
+    }
+    .tab-btn:hover:not(.active) { border-color: rgba(255,255,255,0.1); }
+
+    /* Duration btn active */
+    .duration-btn { border: 1px solid transparent; transition: all 0.2s ease; }
+    .duration-btn.active {
+      background: rgba(124,58,237,0.2) !important;
+      border-color: rgba(167,139,250,0.35) !important;
+      color: #A78BFA !important;
+    }
+
+    /* Technique card gradient border */
+    .technique-card { position: relative; border-radius: 20px; }
+    .technique-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(167,139,250,0.25), rgba(99,102,241,0.08), rgba(167,139,250,0.25));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    /* Streak calendar */
+    .streak-day {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      cursor: default;
+    }
+    .streak-day.completed {
+      background: linear-gradient(135deg, #7C3AED, #4F46E5);
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.35);
+    }
+    .streak-day.missed { background: rgba(255, 255, 255, 0.04); }
+    .streak-day.future { background: rgba(255, 255, 255, 0.02); opacity: 0.35; }
+    .streak-day.today { box-shadow: 0 0 0 2px rgba(167,139,250,0.5); }
+
+    /* Timer SVG */
+    #timer-progress { transition: stroke-dashoffset 1s linear; }
+
+    /* Timer buttons */
+    .timer-btn { transition: transform 0.15s ease, background 0.2s ease; }
+    .timer-btn:hover { transform: scale(1.08); }
+    .timer-btn:active { transform: scale(0.94); }
+
+    /* Progress bar */
+    .progress-bar {
+      height: 4px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, #7C3AED, #6366F1);
+      transition: width 0.5s ease;
+    }
+
+    /* Pulse badge dot */
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .pulse-dot { animation: pulseDot 2s ease-in-out infinite; }
+
+    /* Float scroll indicator */
+    @keyframes floatDown {
+      0%, 100% { transform: translateY(0) translateX(-50%); opacity: 0.6; }
+      50% { transform: translateY(6px) translateX(-50%); opacity: 1; }
+    }
+    .float-down { animation: floatDown 2.5s ease-in-out infinite; }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #060918; }
+    ::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.35); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.6); }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body class="aurora-bg min-h-screen">
+
+  <!-- Ambient orbs -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+    <div class="orb w-80 h-80 top-[-60px] left-[-80px]" style="background:#7C3AED; animation-duration:9s;"></div>
+    <div class="orb w-72 h-72 top-1/3 right-[-60px]" style="background:#4F46E5; animation-duration:12s; animation-delay:-4s;"></div>
+    <div class="orb w-64 h-64 bottom-1/4 left-1/4" style="background:#2563EB; animation-duration:14s; animation-delay:-7s;"></div>
+    <div class="orb w-48 h-48 bottom-[-40px] right-1/3" style="background:#9333EA; animation-duration:11s; animation-delay:-2s;"></div>
+  </div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="fixed top-4 left-4 right-4 z-50" role="navigation" aria-label="Main navigation">
+    <div class="max-w-6xl mx-auto glass rounded-2xl px-5 py-3 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-2.5 cursor-pointer" aria-label="MindfulPath home">
+        <svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+          <circle cx="15" cy="15" r="13" stroke="#A78BFA" stroke-width="1.5"/>
+          <circle cx="15" cy="15" r="6.5" fill="rgba(167,139,250,0.15)" stroke="#A78BFA" stroke-width="1"/>
+          <circle cx="15" cy="15" r="2.5" fill="#A78BFA"/>
+          <path d="M15 2v4M15 24v4M2 15h4M24 15h4" stroke="#A78BFA" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span class="font-heading text-lg font-semibold text-white tracking-tight">MindfulPath</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-7" role="list">
+        <a href="#techniques" class="nav-link text-sm font-medium text-gray-300 cursor-pointer" role="listitem">Techniques</a>
+        <a href="#breathe" class="nav-link text-sm font-medium text-gray-300 cursor-pointer" role="listitem">Breathe</a>
+        <a href="#courses" class="nav-link text-sm font-medium text-gray-300 cursor-pointer" role="listitem">Courses</a>
+        <a href="#timer" class="nav-link text-sm font-medium text-gray-300 cursor-pointer" role="listitem">Timer</a>
+        <a href="#streak" class="nav-link text-sm font-medium text-gray-300 cursor-pointer" role="listitem">Streak</a>
+      </div>
+
+      <a href="#courses" class="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 glow-purple" style="background:linear-gradient(135deg,#7C3AED,#6366F1);">
+        Begin Journey
+      </a>
+
+      <button id="mobile-menu-btn" class="md:hidden p-2 rounded-xl glass cursor-pointer transition-all duration-200 hover:bg-white/10" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg id="menu-open-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        <svg id="menu-close-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" class="hidden" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div id="mobile-menu" class="md:hidden hidden mt-2 glass rounded-2xl px-5 py-4 flex-col gap-1">
+      <a href="#techniques" class="nav-link block text-sm font-medium text-gray-300 py-2.5 cursor-pointer">Techniques</a>
+      <a href="#breathe" class="nav-link block text-sm font-medium text-gray-300 py-2.5 cursor-pointer">Breathe</a>
+      <a href="#courses" class="nav-link block text-sm font-medium text-gray-300 py-2.5 cursor-pointer">Courses</a>
+      <a href="#timer" class="nav-link block text-sm font-medium text-gray-300 py-2.5 cursor-pointer">Timer</a>
+      <a href="#streak" class="nav-link block text-sm font-medium text-gray-300 py-2.5 cursor-pointer">Streak</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO ===== -->
+  <section id="home" class="relative min-h-screen flex flex-col items-center justify-center px-4 pt-28 pb-20 z-10">
+    <div class="max-w-4xl mx-auto text-center">
+
+      <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-8 text-xs font-semibold text-purple-300 tracking-widest uppercase reveal">
+        <span class="w-1.5 h-1.5 rounded-full bg-purple-400 pulse-dot"></span>
+        Your Journey to Inner Peace
+      </div>
+
+      <h1 class="font-heading text-5xl sm:text-6xl md:text-7xl font-bold text-white mb-6 leading-tight reveal text-glow" style="transition-delay:0.1s;">
+        Still the Mind.<br>
+        <span class="gradient-text">Find Your Peace.</span>
+      </h1>
+
+      <p class="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light reveal" style="transition-delay:0.2s;">
+        Guided meditation for every level. Build a lasting practice with evidence-based techniques, breathing exercises, and daily streaks.
+      </p>
+
+      <div class="flex flex-wrap gap-4 justify-center reveal" style="transition-delay:0.3s;">
+        <a href="#courses" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-semibold text-white cursor-pointer transition-all duration-200 glow-purple hover:scale-105 active:scale-95" style="background:linear-gradient(135deg,#7C3AED,#6366F1);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
+          Start Meditating
+        </a>
+        <a href="#breathe" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-semibold text-purple-300 cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 glass glass-hover">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3" stroke-linecap="round"/></svg>
+          Try Breathing
+        </a>
+      </div>
+
+      <div class="mt-16 grid grid-cols-3 gap-8 max-w-sm mx-auto reveal" style="transition-delay:0.4s;">
+        <div class="text-center">
+          <div class="font-heading text-2xl font-bold" style="color:#A78BFA;">50+</div>
+          <div class="text-xs text-gray-500 mt-1">Sessions</div>
+        </div>
+        <div class="text-center" style="border-left:1px solid rgba(255,255,255,0.08);border-right:1px solid rgba(255,255,255,0.08);">
+          <div class="font-heading text-2xl font-bold" style="color:#A78BFA;">4</div>
+          <div class="text-xs text-gray-500 mt-1">Techniques</div>
+        </div>
+        <div class="text-center">
+          <div class="font-heading text-2xl font-bold" style="color:#A78BFA;">∞</div>
+          <div class="text-xs text-gray-500 mt-1">Peace</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-8 left-1/2 float-down flex flex-col items-center gap-1.5 text-gray-600 text-xs" aria-hidden="true">
+      <span>Scroll</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
+    </div>
+  </section>
+
+  <!-- ===== BREATHING EXERCISE ===== -->
+  <section id="breathe" class="relative py-24 px-4 z-10">
+    <div class="max-w-3xl mx-auto text-center">
+      <div class="reveal">
+        <span class="text-purple-400 text-xs font-semibold tracking-widest uppercase">Guided Exercise</span>
+        <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mt-3 mb-4">Breathe with Me</h2>
+        <p class="text-gray-400 text-lg max-w-xl mx-auto mb-12 font-light">Follow the circle — breathe in as it expands, hold at the top, then breathe out as it contracts.</p>
+      </div>
+
+      <div class="flex flex-col items-center gap-8 reveal" style="transition-delay:0.15s;">
+
+        <!-- Circle -->
+        <div class="relative w-60 h-60 flex items-center justify-center select-none" aria-live="polite" aria-label="Breathing guide">
+          <!-- Outer pulse ring -->
+          <div id="pulse-ring" class="absolute inset-0 rounded-full" style="border:1px solid rgba(167,139,250,0.15); pointer-events:none;"></div>
+          <!-- Mid ring -->
+          <div class="absolute rounded-full" style="inset:22px; border:1px solid rgba(139,92,246,0.15); pointer-events:none;"></div>
+
+          <!-- Main circle -->
+          <div id="breathe-circle" class="w-40 h-40 rounded-full flex flex-col items-center justify-center select-none"
+            style="background:radial-gradient(circle at 38% 32%, rgba(167,139,250,0.45), rgba(124,58,237,0.25));
+                   box-shadow:0 0 45px rgba(124,58,237,0.35), inset 0 0 30px rgba(167,139,250,0.08);
+                   transform:scale(0.9); transition:transform 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease; opacity:0.85;">
+            <div id="breathe-label" class="font-heading text-sm font-semibold text-white">Press Start</div>
+            <div id="breathe-count" class="text-purple-300 text-xs mt-1">—</div>
+          </div>
+        </div>
+
+        <!-- Phase dots -->
+        <div class="flex gap-8 items-center" role="status" aria-live="polite" aria-label="Current breathing phase">
+          <div class="flex items-center gap-2">
+            <div id="dot-inhale" class="w-2 h-2 rounded-full transition-all duration-300" style="background:#374151;"></div>
+            <span class="text-xs text-gray-500">Inhale</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div id="dot-hold" class="w-2 h-2 rounded-full transition-all duration-300" style="background:#374151;"></div>
+            <span class="text-xs text-gray-500">Hold</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <div id="dot-exhale" class="w-2 h-2 rounded-full transition-all duration-300" style="background:#374151;"></div>
+            <span class="text-xs text-gray-500">Exhale</span>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center gap-3 flex-wrap justify-center">
+          <button id="breathe-btn" class="px-8 py-3 rounded-2xl font-semibold text-white cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95 glow-purple" style="background:linear-gradient(135deg,#7C3AED,#6366F1);" aria-label="Start breathing exercise">
+            Start
+          </button>
+          <select id="breath-pattern" class="glass rounded-2xl px-4 py-3 text-sm text-gray-300 cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-0" aria-label="Breathing pattern" style="background:rgba(255,255,255,0.05);">
+            <option value="4-4-4">Box (4-4-4)</option>
+            <option value="4-7-8">Calming (4-7-8)</option>
+            <option value="4-4-6">Balance (4-4-6)</option>
+          </select>
+        </div>
+
+        <p class="text-gray-600 text-sm">Cycles: <span id="cycle-count" class="font-semibold" style="color:#A78BFA;">0</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TECHNIQUES ===== -->
+  <section id="techniques" class="relative py-24 px-4 z-10">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-14 reveal">
+        <span class="text-purple-400 text-xs font-semibold tracking-widest uppercase">Core Practices</span>
+        <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mt-3 mb-4">Meditation Techniques</h2>
+        <p class="text-gray-400 text-lg max-w-xl mx-auto font-light">Four proven methods to cultivate awareness, compassion, and stillness.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        <!-- Breath Focus -->
+        <article class="technique-card glass glass-hover rounded-[20px] p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1.5 reveal" style="transition-delay:0.08s;" tabindex="0" role="button" aria-label="Explore Breath Focus technique" onclick="openModal('breath')">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,rgba(124,58,237,0.28),rgba(99,102,241,0.28));border:1px solid rgba(167,139,250,0.2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v4l3 3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="font-heading text-lg font-semibold text-white mb-2">Breath Focus</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-5">Anchor attention to the natural rhythm of breathing. The foundation of all meditation practice.</p>
+          <div class="flex items-center gap-1.5 text-xs mb-4" style="color:#A78BFA;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            5–20 min · All levels
+          </div>
+          <button class="w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:text-white cursor-pointer" style="background:rgba(124,58,237,0.15);border:1px solid rgba(167,139,250,0.15);color:#A78BFA;" aria-hidden="true">Explore</button>
+        </article>
+
+        <!-- Body Scan -->
+        <article class="technique-card glass glass-hover rounded-[20px] p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1.5 reveal" style="transition-delay:0.16s;" tabindex="0" role="button" aria-label="Explore Body Scan technique" onclick="openModal('body')">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,rgba(56,189,248,0.18),rgba(99,102,241,0.18));border:1px solid rgba(129,140,248,0.2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818CF8" stroke-width="1.5" aria-hidden="true">
+              <path d="M12 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+              <path d="M12 6v5M10 8h4" stroke-linecap="round"/>
+              <path d="M9 14c0 2.5 3 5.5 3 5.5s3-3 3-5.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7 11.5c0 1.2 1 2.5 2 3.5M17 11.5c0 1.2-1 2.5-2 3.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="font-heading text-lg font-semibold text-white mb-2">Body Scan</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-5">Systematically move attention through each part of the body, releasing tension and deepening presence.</p>
+          <div class="flex items-center gap-1.5 text-xs mb-4" style="color:#818CF8;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            10–30 min · Beginner+
+          </div>
+          <button class="w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:text-white cursor-pointer" style="background:rgba(99,102,241,0.15);border:1px solid rgba(129,140,248,0.15);color:#818CF8;" aria-hidden="true">Explore</button>
+        </article>
+
+        <!-- Loving-Kindness -->
+        <article class="technique-card glass glass-hover rounded-[20px] p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1.5 reveal" style="transition-delay:0.24s;" tabindex="0" role="button" aria-label="Explore Loving-Kindness technique" onclick="openModal('loving')">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,rgba(244,114,182,0.2),rgba(124,58,237,0.2));border:1px solid rgba(244,114,182,0.2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="1.5" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="font-heading text-lg font-semibold text-white mb-2">Loving-Kindness</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-5">Cultivate unconditional warmth and compassion — for yourself first, then radiating outward to all beings.</p>
+          <div class="flex items-center gap-1.5 text-xs mb-4" style="color:#F472B6;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            10–20 min · All levels
+          </div>
+          <button class="w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:text-white cursor-pointer" style="background:rgba(244,114,182,0.15);border:1px solid rgba(244,114,182,0.15);color:#F472B6;" aria-hidden="true">Explore</button>
+        </article>
+
+        <!-- Mindfulness -->
+        <article class="technique-card glass glass-hover rounded-[20px] p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1.5 reveal" style="transition-delay:0.32s;" tabindex="0" role="button" aria-label="Explore Mindfulness technique" onclick="openModal('mindfulness')">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,rgba(52,211,153,0.18),rgba(99,102,241,0.18));border:1px solid rgba(52,211,153,0.2);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M12 8v4" stroke-linecap="round"/>
+              <circle cx="12" cy="16" r="0.5" fill="#34D399" stroke="#34D399"/>
+            </svg>
+          </div>
+          <h3 class="font-heading text-lg font-semibold text-white mb-2">Mindfulness</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-5">Observe thoughts and sensations without judgment. Train the mind to be fully present in each moment.</p>
+          <div class="flex items-center gap-1.5 text-xs mb-4" style="color:#34D399;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            5–45 min · All levels
+          </div>
+          <button class="w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 hover:text-white cursor-pointer" style="background:rgba(52,211,153,0.15);border:1px solid rgba(52,211,153,0.15);color:#34D399;" aria-hidden="true">Explore</button>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COURSES ===== -->
+  <section id="courses" class="relative py-24 px-4 z-10">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-12 reveal">
+        <span class="text-purple-400 text-xs font-semibold tracking-widest uppercase">Learning Tracks</span>
+        <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mt-3 mb-4">Course Tracks</h2>
+        <p class="text-gray-400 text-lg max-w-xl mx-auto font-light">Structured programs designed for where you are right now.</p>
+      </div>
+
+      <div class="flex gap-3 justify-center mb-8 reveal" style="transition-delay:0.1s;" role="tablist" aria-label="Course tracks">
+        <button class="tab-btn active px-5 py-2.5 rounded-xl text-sm font-semibold glass cursor-pointer" data-tab="beginner" role="tab" aria-selected="true" aria-controls="panel-beginner" id="tab-beginner">Beginner</button>
+        <button class="tab-btn px-5 py-2.5 rounded-xl text-sm font-semibold glass text-gray-400 cursor-pointer" data-tab="intermediate" role="tab" aria-selected="false" aria-controls="panel-intermediate" id="tab-intermediate">Intermediate</button>
+        <button class="tab-btn px-5 py-2.5 rounded-xl text-sm font-semibold glass text-gray-400 cursor-pointer" data-tab="advanced" role="tab" aria-selected="false" aria-controls="panel-advanced" id="tab-advanced">Advanced</button>
+      </div>
+
+      <!-- Beginner -->
+      <div id="panel-beginner" role="tabpanel" aria-labelledby="tab-beginner" class="glass rounded-3xl p-7 md:p-9 reveal" style="transition-delay:0.2s;">
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(52,211,153,0.18);color:#34D399;">Beginner</span>
+              <span class="text-gray-500 text-sm">7-day program</span>
+            </div>
+            <h3 class="font-heading text-2xl font-bold text-white mb-2">Finding Your Ground</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6 font-light">Start from zero with simple, practical techniques. No experience needed — just a few minutes of curiosity each day.</p>
+            <ol class="space-y-3" aria-label="Course sessions">
+              <li class="flex items-center gap-3 text-sm">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#7C3AED,#6366F1);" aria-label="Completed">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <span class="text-gray-300">Day 1: What is Meditation?</span>
+                <span class="ml-auto text-gray-600 text-xs flex-shrink-0">5 min</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0" style="background:linear-gradient(135deg,#7C3AED,#6366F1);" aria-label="Completed">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <span class="text-gray-300">Day 2: The Breath as Anchor</span>
+                <span class="ml-auto text-gray-600 text-xs flex-shrink-0">7 min</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">3</div>
+                <span class="text-gray-400">Day 3: Dealing with Distraction</span>
+                <span class="ml-auto text-gray-600 text-xs flex-shrink-0">8 min</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">4</div>
+                <span class="text-gray-400">Day 4: Body Awareness</span>
+                <span class="ml-auto text-gray-600 text-xs flex-shrink-0">10 min</span>
+              </li>
+              <li class="flex items-center gap-3 text-sm">
+                <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-600" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);">...</div>
+                <span class="text-gray-600">Days 5–7: Continue the journey</span>
+              </li>
+            </ol>
+          </div>
+          <div class="md:w-52 flex-shrink-0">
+            <div class="glass rounded-2xl p-5">
+              <div class="text-center mb-4">
+                <div class="font-heading text-3xl font-bold text-white">29%</div>
+                <div class="text-gray-500 text-xs mt-1">Complete</div>
+              </div>
+              <div class="w-full rounded-full h-2 mb-5" style="background:rgba(255,255,255,0.08);">
+                <div class="progress-bar" style="width:29%;" role="progressbar" aria-valuenow="29" aria-valuemin="0" aria-valuemax="100" aria-label="29% complete"></div>
+              </div>
+              <div class="space-y-2 text-xs text-gray-400 mb-5">
+                <div class="flex justify-between"><span>Sessions</span><span class="text-white font-medium">2 / 7</span></div>
+                <div class="flex justify-between"><span>Time</span><span class="text-white font-medium">12 min</span></div>
+                <div class="flex justify-between"><span>Streak</span><span style="color:#34D399;" class="font-medium">2 days</span></div>
+              </div>
+              <button class="w-full py-2.5 rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95" style="background:linear-gradient(135deg,#7C3AED,#6366F1);" aria-label="Continue to next session">
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intermediate -->
+      <div id="panel-intermediate" role="tabpanel" aria-labelledby="tab-intermediate" class="glass rounded-3xl p-7 md:p-9 hidden">
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(129,140,248,0.18);color:#818CF8;">Intermediate</span>
+              <span class="text-gray-500 text-sm">14-day program</span>
+            </div>
+            <h3 class="font-heading text-2xl font-bold text-white mb-2">Deepening the Practice</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6 font-light">Build on your foundation with longer sits, body scan techniques, and working with emotions.</p>
+            <ol class="space-y-3">
+              <li class="flex items-center gap-3 text-sm"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">1</div><span class="text-gray-400">Week 1: Sustaining Attention (10 min/day)</span></li>
+              <li class="flex items-center gap-3 text-sm"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">2</div><span class="text-gray-400">Week 2: Working with Emotions</span></li>
+              <li class="flex items-center gap-3 text-sm"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">3</div><span class="text-gray-400">Body Scan Deep Dive</span></li>
+              <li class="flex items-center gap-3 text-sm"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">4</div><span class="text-gray-400">Loving-Kindness Introduction</span></li>
+            </ol>
+          </div>
+          <div class="md:w-52 flex-shrink-0">
+            <div class="glass rounded-2xl p-5">
+              <div class="text-center mb-4">
+                <div class="font-heading text-3xl font-bold text-white">0%</div>
+                <div class="text-gray-500 text-xs mt-1">Complete</div>
+              </div>
+              <div class="w-full rounded-full h-2 mb-5" style="background:rgba(255,255,255,0.08);">
+                <div class="progress-bar" style="width:0%;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="0% complete"></div>
+              </div>
+              <div class="space-y-2 text-xs text-gray-400 mb-5">
+                <div class="flex justify-between"><span>Sessions</span><span class="text-white font-medium">0 / 14</span></div>
+                <div class="flex justify-between"><span>Recommended</span><span class="text-white font-medium">7+ days</span></div>
+              </div>
+              <button class="w-full py-2.5 rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95" style="background:linear-gradient(135deg,#7C3AED,#6366F1);" aria-label="Begin Intermediate course">Begin</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced -->
+      <div id="panel-advanced" role="tabpanel" aria-labelledby="tab-advanced" class="glass rounded-3xl p-7 md:p-9 hidden">
+        <div class="flex flex-col md:flex-row gap-8">
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              <span class="px-3 py-1 rounded-full text-xs font-semibold" style="background:rgba(251,113,133,0.18);color:#F472B6;">Advanced</span>
+              <span class="text-gray-500 text-sm">30-day program</span>
+            </div>
+            <h3 class="font-heading text-2xl font-bold text-white mb-2">The Contemplative Path</h3>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6 font-light">Explore advanced techniques: open awareness, non-dual inquiry, and formal retreat-style practice.</p>
+            <ol class="space-y-3">
+              <li class="flex items-center gap-3 text-sm"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">1</div><span class="text-gray-400">Module 1: Open Awareness (20 min/day)</span></li>
+              <li class="flex items-center gap-3 text-sm"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">2</div><span class="text-gray-400">Module 2: Non-Dual Inquiry</span></li>
+              <li class="flex items-center gap-3 text-sm"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">3</div><span class="text-gray-400">Module 3: The Jhanas</span></li>
+              <li class="flex items-center gap-3 text-sm"><div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-gray-400" style="background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);">4</div><span class="text-gray-400">Module 4: Integration in Daily Life</span></li>
+            </ol>
+          </div>
+          <div class="md:w-52 flex-shrink-0">
+            <div class="glass rounded-2xl p-5">
+              <div class="text-center mb-4">
+                <div class="font-heading text-3xl font-bold text-white">0%</div>
+                <div class="text-gray-500 text-xs mt-1">Complete</div>
+              </div>
+              <div class="w-full rounded-full h-2 mb-5" style="background:rgba(255,255,255,0.08);">
+                <div class="progress-bar" style="width:0%;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="0% complete"></div>
+              </div>
+              <div class="space-y-2 text-xs text-gray-400 mb-5">
+                <div class="flex justify-between"><span>Sessions</span><span class="text-white font-medium">0 / 30</span></div>
+                <div class="flex justify-between"><span>Recommended</span><span class="text-white font-medium">30+ days</span></div>
+              </div>
+              <button class="w-full py-2.5 rounded-xl text-sm font-semibold text-white cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95" style="background:linear-gradient(135deg,#7C3AED,#6366F1);" aria-label="Begin Advanced course">Begin</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== SESSION TIMER ===== -->
+  <section id="timer" class="relative py-24 px-4 z-10">
+    <div class="max-w-md mx-auto text-center">
+      <div class="reveal">
+        <span class="text-purple-400 text-xs font-semibold tracking-widest uppercase">Practice</span>
+        <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mt-3 mb-4">Session Timer</h2>
+        <p class="text-gray-400 text-base max-w-xs mx-auto mb-10 font-light">Set your intention, choose a duration, and sit in stillness.</p>
+      </div>
+
+      <!-- Duration buttons -->
+      <div class="flex gap-2 justify-center mb-10 flex-wrap reveal" style="transition-delay:0.1s;" role="group" aria-label="Session duration">
+        <button class="duration-btn px-4 py-2 rounded-xl text-sm font-semibold glass text-gray-400 cursor-pointer" data-min="5" aria-pressed="false">5 min</button>
+        <button class="duration-btn active px-4 py-2 rounded-xl text-sm font-semibold glass cursor-pointer" data-min="10" aria-pressed="true">10 min</button>
+        <button class="duration-btn px-4 py-2 rounded-xl text-sm font-semibold glass text-gray-400 cursor-pointer" data-min="15" aria-pressed="false">15 min</button>
+        <button class="duration-btn px-4 py-2 rounded-xl text-sm font-semibold glass text-gray-400 cursor-pointer" data-min="20" aria-pressed="false">20 min</button>
+        <button class="duration-btn px-4 py-2 rounded-xl text-sm font-semibold glass text-gray-400 cursor-pointer" data-min="30" aria-pressed="false">30 min</button>
+      </div>
+
+      <!-- SVG timer -->
+      <div class="relative w-56 h-56 mx-auto mb-8 reveal" style="transition-delay:0.2s;">
+        <svg class="w-full h-full" viewBox="0 0 200 200" style="transform:rotate(-90deg);" aria-hidden="true">
+          <circle cx="100" cy="100" r="88" fill="none" stroke="rgba(255,255,255,0.055)" stroke-width="7"/>
+          <circle id="timer-ring" cx="100" cy="100" r="88" fill="none" stroke="url(#timerGrad)" stroke-width="7" stroke-linecap="round"
+            stroke-dasharray="552.9" stroke-dashoffset="0"/>
+          <defs>
+            <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#7C3AED"/>
+              <stop offset="100%" style="stop-color:#6366F1"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <div id="timer-display" class="font-heading text-4xl font-bold text-white" aria-live="polite" aria-label="Timer display">10:00</div>
+          <div id="timer-status" class="text-gray-500 text-xs mt-1.5">Ready</div>
+        </div>
+      </div>
+
+      <!-- Timer controls -->
+      <div class="flex gap-4 justify-center items-center reveal" style="transition-delay:0.3s;">
+        <button id="timer-reset" class="timer-btn w-12 h-12 rounded-full glass flex items-center justify-center cursor-pointer hover:bg-white/10" aria-label="Reset timer">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" aria-hidden="true"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-4.5" stroke-linecap="round"/></svg>
+        </button>
+        <button id="timer-start" class="timer-btn w-16 h-16 rounded-full flex items-center justify-center cursor-pointer glow-purple" style="background:linear-gradient(135deg,#7C3AED,#6366F1);" aria-label="Start timer">
+          <svg id="icon-play" width="21" height="21" viewBox="0 0 24 24" fill="white" aria-hidden="true"><path d="M5 3l14 9-14 9V3z"/></svg>
+          <svg id="icon-pause" width="21" height="21" viewBox="0 0 24 24" fill="white" class="hidden" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+        <button id="timer-bell" class="timer-btn w-12 h-12 rounded-full glass flex items-center justify-center cursor-pointer hover:bg-white/10" aria-label="Toggle end bell" aria-pressed="true">
+          <svg id="bell-on" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0" stroke-linecap="round"/></svg>
+          <svg id="bell-off" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" class="hidden" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        </button>
+      </div>
+
+      <!-- Sessions today -->
+      <div class="mt-8 glass rounded-2xl px-5 py-3.5 inline-flex items-center gap-3 reveal" style="transition-delay:0.4s;">
+        <div class="flex gap-1">
+          <div id="sdot1" class="w-2.5 h-2.5 rounded-full" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);"></div>
+          <div id="sdot2" class="w-2.5 h-2.5 rounded-full" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);"></div>
+          <div id="sdot3" class="w-2.5 h-2.5 rounded-full" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);"></div>
+        </div>
+        <span class="text-gray-400 text-sm"><span id="sessions-today" class="text-white font-semibold">0</span> sessions today</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STREAK ===== -->
+  <section id="streak" class="relative py-24 px-4 z-10">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-12 reveal">
+        <span class="text-purple-400 text-xs font-semibold tracking-widest uppercase">Consistency</span>
+        <h2 class="font-heading text-4xl md:text-5xl font-bold text-white mt-3 mb-4">Daily Streak</h2>
+        <p class="text-gray-400 text-lg max-w-xl mx-auto font-light">Every day you practice, you build the neural pathways of calm.</p>
+      </div>
+
+      <div class="glass rounded-3xl p-7 md:p-9 reveal" style="transition-delay:0.1s;">
+
+        <!-- Stats -->
+        <div class="grid grid-cols-3 gap-4 mb-8">
+          <div class="text-center">
+            <div id="stat-current" class="font-heading text-4xl font-bold" style="color:#A78BFA;">0</div>
+            <div class="text-gray-500 text-sm mt-1">Current</div>
+            <div class="flex justify-center mt-1.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#F59E0B" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+          </div>
+          <div class="text-center" style="border-left:1px solid rgba(255,255,255,0.07);border-right:1px solid rgba(255,255,255,0.07);">
+            <div id="stat-best" class="font-heading text-4xl font-bold" style="color:#A78BFA;">0</div>
+            <div class="text-gray-500 text-sm mt-1">Best</div>
+            <div class="flex justify-center mt-1.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="2" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+          </div>
+          <div class="text-center">
+            <div id="stat-total" class="font-heading text-4xl font-bold" style="color:#A78BFA;">0</div>
+            <div class="text-gray-500 text-sm mt-1">Total Days</div>
+            <div class="flex justify-center mt-1.5">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-gray-500 text-xs">Past 5 weeks</span>
+            <button id="log-today" class="text-xs font-semibold cursor-pointer transition-colors duration-200 hover:opacity-80" style="color:#A78BFA;" aria-label="Log today's meditation session">+ Log today</button>
+          </div>
+          <div class="grid grid-cols-7 gap-1 mb-1.5" aria-hidden="true">
+            <div class="text-center text-gray-600 text-xs">S</div><div class="text-center text-gray-600 text-xs">M</div><div class="text-center text-gray-600 text-xs">T</div><div class="text-center text-gray-600 text-xs">W</div><div class="text-center text-gray-600 text-xs">T</div><div class="text-center text-gray-600 text-xs">F</div><div class="text-center text-gray-600 text-xs">S</div>
+          </div>
+          <div id="calendar" class="grid grid-cols-7 gap-1" role="grid" aria-label="Meditation streak calendar"></div>
+        </div>
+
+        <!-- Quote -->
+        <div class="rounded-2xl p-4 text-center" style="background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(99,102,241,0.08));border:1px solid rgba(167,139,250,0.12);">
+          <p id="streak-quote" class="text-gray-300 text-sm italic font-heading leading-relaxed">"The mind is like water. When it is turbulent, it is difficult to see. When it is calm, everything becomes clear."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="relative z-10 py-10 px-4" style="border-top:1px solid rgba(255,255,255,0.05);">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5">
+      <div class="flex items-center gap-2">
+        <svg width="22" height="22" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+          <circle cx="15" cy="15" r="13" stroke="#A78BFA" stroke-width="1.5"/>
+          <circle cx="15" cy="15" r="6.5" fill="rgba(167,139,250,0.15)" stroke="#A78BFA" stroke-width="1"/>
+          <circle cx="15" cy="15" r="2.5" fill="#A78BFA"/>
+        </svg>
+        <span class="font-heading text-base font-semibold text-white">MindfulPath</span>
+      </div>
+      <p class="text-gray-600 text-sm">Peace is always available. Just breathe.</p>
+      <div class="flex items-center gap-6 text-sm text-gray-600">
+        <a href="#techniques" class="hover:text-gray-400 transition-colors duration-200 cursor-pointer">Techniques</a>
+        <a href="#courses" class="hover:text-gray-400 transition-colors duration-200 cursor-pointer">Courses</a>
+        <a href="#timer" class="hover:text-gray-400 transition-colors duration-200 cursor-pointer">Timer</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== TECHNIQUE MODAL ===== -->
+  <div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="modal-heading">
+    <div id="modal-bg" class="absolute inset-0" style="background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);"></div>
+    <div class="relative glass rounded-3xl p-8 max-w-md w-full" style="border-color:rgba(167,139,250,0.18);max-height:90vh;overflow-y:auto;">
+      <button id="modal-close" class="absolute top-4 right-4 w-8 h-8 rounded-full glass flex items-center justify-center cursor-pointer hover:bg-white/10 transition-all duration-200" aria-label="Close">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    // ─── Scroll Reveal ────────────────────────────────────────────
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // ─── Mobile nav ───────────────────────────────────────────────
+    const mBtn = document.getElementById('mobile-menu-btn');
+    const mMenu = document.getElementById('mobile-menu');
+    const mOpen = document.getElementById('menu-open-icon');
+    const mClose = document.getElementById('menu-close-icon');
+    mBtn.addEventListener('click', () => {
+      const open = mMenu.style.display === 'flex';
+      mMenu.style.display = open ? 'none' : 'flex';
+      mMenu.classList.toggle('hidden', open);
+      mOpen.classList.toggle('hidden', !open);
+      mClose.classList.toggle('hidden', open);
+      mBtn.setAttribute('aria-expanded', !open);
+    });
+    mMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      mMenu.style.display = 'none';
+      mMenu.classList.add('hidden');
+      mOpen.classList.remove('hidden');
+      mClose.classList.add('hidden');
+      mBtn.setAttribute('aria-expanded', 'false');
+    }));
+
+    // ─── Breathing Exercise ───────────────────────────────────────
+    const breatheCircle = document.getElementById('breathe-circle');
+    const breatheLabel  = document.getElementById('breathe-label');
+    const breatheCount  = document.getElementById('breathe-count');
+    const breatheBtn    = document.getElementById('breathe-btn');
+    const cycleCount    = document.getElementById('cycle-count');
+    const dotI = document.getElementById('dot-inhale');
+    const dotH = document.getElementById('dot-hold');
+    const dotE = document.getElementById('dot-exhale');
+
+    const PATTERNS = {
+      '4-4-4': [4, 4, 4],
+      '4-7-8': [4, 7, 8],
+      '4-4-6': [4, 4, 6],
+    };
+
+    let bActive = false, bPhase = 0, bCountdown = 0, bCycles = 0, bTimer = null;
+
+    function getPhaseLen() {
+      const p = PATTERNS[document.getElementById('breath-pattern').value] || [4,4,4];
+      return p[bPhase];
+    }
+
+    function setDot(phase) {
+      [dotI, dotH, dotE].forEach((d, i) => {
+        const colors = ['#A78BFA','#818CF8','#93C5FD'];
+        const glows  = ['rgba(167,139,250,0.5)','rgba(129,140,248,0.5)','rgba(147,197,253,0.5)'];
+        d.style.background = i === phase ? colors[i] : '#374151';
+        d.style.boxShadow  = i === phase ? `0 0 7px ${glows[i]}` : 'none';
+      });
+    }
+
+    function applyPhaseStyle() {
+      const dur = getPhaseLen();
+      if (bPhase === 0) {
+        breatheLabel.textContent = 'Breathe In';
+        breatheCircle.style.transition = `transform ${dur}s ease-in-out, box-shadow ${dur}s ease-in-out, opacity ${dur}s ease-in-out`;
+        breatheCircle.style.transform  = 'scale(1.28)';
+        breatheCircle.style.opacity    = '1';
+        breatheCircle.style.boxShadow  = '0 0 65px rgba(124,58,237,0.5), inset 0 0 40px rgba(167,139,250,0.18)';
+        setDot(0);
+      } else if (bPhase === 1) {
+        breatheLabel.textContent = 'Hold';
+        setDot(1);
+      } else {
+        breatheLabel.textContent = 'Breathe Out';
+        breatheCircle.style.transition = `transform ${dur}s ease-in-out, box-shadow ${dur}s ease-in-out, opacity ${dur}s ease-in-out`;
+        breatheCircle.style.transform  = 'scale(0.82)';
+        breatheCircle.style.opacity    = '0.68';
+        breatheCircle.style.boxShadow  = '0 0 18px rgba(124,58,237,0.15), inset 0 0 10px rgba(167,139,250,0.04)';
+        setDot(2);
+      }
+      bCountdown = getPhaseLen();
+      breatheCount.textContent = bCountdown;
+    }
+
+    function breathTick() {
+      bCountdown--;
+      breatheCount.textContent = bCountdown > 0 ? bCountdown : '';
+      if (bCountdown <= 0) {
+        bPhase = (bPhase + 1) % 3;
+        if (bPhase === 0) { bCycles++; cycleCount.textContent = bCycles; }
+        applyPhaseStyle();
+      }
+    }
+
+    breatheBtn.addEventListener('click', () => {
+      if (bActive) {
+        clearInterval(bTimer);
+        bActive = false;
+        breatheBtn.textContent = 'Start';
+        breatheLabel.textContent = 'Press Start';
+        breatheCount.textContent = '—';
+        breatheCircle.style.transition = 'transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease';
+        breatheCircle.style.transform  = 'scale(0.9)';
+        breatheCircle.style.opacity    = '0.85';
+        breatheCircle.style.boxShadow  = '0 0 45px rgba(124,58,237,0.35), inset 0 0 30px rgba(167,139,250,0.08)';
+        [dotI, dotH, dotE].forEach(d => { d.style.background = '#374151'; d.style.boxShadow = 'none'; });
+      } else {
+        bActive = true; bPhase = 0; bCycles = 0;
+        cycleCount.textContent = 0;
+        breatheBtn.textContent = 'Stop';
+        applyPhaseStyle();
+        bTimer = setInterval(breathTick, 1000);
+      }
+    });
+
+    // ─── Course Tabs ──────────────────────────────────────────────
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => {
+          b.classList.remove('active');
+          b.classList.add('text-gray-400');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.classList.remove('text-gray-400');
+        btn.setAttribute('aria-selected', 'true');
+        ['beginner','intermediate','advanced'].forEach(t => {
+          document.getElementById(`panel-${t}`).classList.toggle('hidden', t !== btn.dataset.tab);
+        });
+      });
+    });
+
+    // ─── Session Timer ────────────────────────────────────────────
+    let tDuration = 600, tRemaining = 600, tRunning = false, tInterval = null, bellOn = true;
+    const CIRC = 552.9;
+    const ring    = document.getElementById('timer-ring');
+    const tDisplay = document.getElementById('timer-display');
+    const tStatus  = document.getElementById('timer-status');
+    const tStart   = document.getElementById('timer-start');
+    const tReset   = document.getElementById('timer-reset');
+    const tBell    = document.getElementById('timer-bell');
+    const playIcon  = document.getElementById('icon-play');
+    const pauseIcon = document.getElementById('icon-pause');
+
+    // Restore sessions today
+    const todayKey = new Date().toDateString();
+    let sessToday = localStorage.getItem('mpSessDate') === todayKey ? parseInt(localStorage.getItem('mpSessCount') || '0') : 0;
+    document.getElementById('sessions-today').textContent = sessToday;
+    updateSessionDots();
+
+    function fmt(s) { return `${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`; }
+
+    function syncRing() {
+      const pct = tRemaining / tDuration;
+      ring.style.strokeDashoffset = CIRC * (1 - pct);
+      tDisplay.textContent = fmt(tRemaining);
+    }
+
+    function updateSessionDots() {
+      ['sdot1','sdot2','sdot3'].forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (i < sessToday) {
+          el.style.background = 'linear-gradient(135deg,#7C3AED,#6366F1)';
+          el.style.boxShadow  = '0 0 6px rgba(124,58,237,0.5)';
+        } else {
+          el.style.background = 'rgba(255,255,255,0.1)';
+          el.style.boxShadow  = 'none';
+        }
+      });
+    }
+
+    function timerDone() {
+      clearInterval(tInterval); tRunning = false;
+      playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
+      tStatus.textContent = 'Complete!'; tStatus.style.color = '#34D399';
+      ring.style.stroke = '#34D399';
+      sessToday++;
+      localStorage.setItem('mpSessDate', todayKey);
+      localStorage.setItem('mpSessCount', sessToday);
+      document.getElementById('sessions-today').textContent = sessToday;
+      updateSessionDots();
+      logToday();
+      if (bellOn) playBell();
+    }
+
+    tStart.addEventListener('click', () => {
+      if (tRemaining === 0) return;
+      if (tRunning) {
+        clearInterval(tInterval); tRunning = false;
+        playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
+        tStatus.textContent = 'Paused'; tStatus.style.color = '';
+      } else {
+        tRunning = true;
+        playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden');
+        tStatus.textContent = 'Meditating…'; tStatus.style.color = '#A78BFA';
+        ring.style.stroke = 'url(#timerGrad)';
+        tInterval = setInterval(() => { tRemaining--; syncRing(); if (tRemaining <= 0) timerDone(); }, 1000);
+      }
+    });
+
+    tReset.addEventListener('click', () => {
+      clearInterval(tInterval); tRunning = false; tRemaining = tDuration;
+      playIcon.classList.remove('hidden'); pauseIcon.classList.add('hidden');
+      tStatus.textContent = 'Ready'; tStatus.style.color = '';
+      ring.style.stroke = 'url(#timerGrad)';
+      syncRing();
+    });
+
+    tBell.addEventListener('click', () => {
+      bellOn = !bellOn;
+      document.getElementById('bell-on').classList.toggle('hidden', !bellOn);
+      document.getElementById('bell-off').classList.toggle('hidden', bellOn);
+      tBell.setAttribute('aria-pressed', bellOn);
+    });
+
+    document.querySelectorAll('.duration-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        if (tRunning) return;
+        document.querySelectorAll('.duration-btn').forEach(x => {
+          x.classList.remove('active'); x.classList.add('text-gray-400'); x.setAttribute('aria-pressed','false');
+        });
+        b.classList.add('active'); b.classList.remove('text-gray-400'); b.setAttribute('aria-pressed','true');
+        tDuration = parseInt(b.dataset.min) * 60;
+        tRemaining = tDuration;
+        tStatus.textContent = 'Ready'; tStatus.style.color = '';
+        syncRing();
+      });
+    });
+
+    syncRing();
+
+    function playBell() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator(), g = ctx.createGain();
+        osc.connect(g); g.connect(ctx.destination);
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(528, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(396, ctx.currentTime + 2.5);
+        g.gain.setValueAtTime(0.35, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3);
+        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 3);
+      } catch(e){}
+    }
+
+    // ─── Streak / Calendar ────────────────────────────────────────
+    function getDays() { return JSON.parse(localStorage.getItem('mpDays') || '[]'); }
+    function saveDays(d) { localStorage.setItem('mpDays', JSON.stringify(d)); }
+
+    function logToday() {
+      const d = getDays(), t = new Date().toISOString().split('T')[0];
+      if (!d.includes(t)) { d.push(t); saveDays(d); }
+      renderStreak();
+    }
+
+    function calcStreak(days) {
+      const total = days.length;
+      if (!total) return { current: 0, best: 0, total: 0 };
+      const sorted = [...days].sort();
+      const todayStr = new Date().toISOString().split('T')[0];
+
+      // Current streak (count backwards from today)
+      let cur = 0;
+      for (let i = 0; i < 365; i++) {
+        const d = new Date(); d.setDate(d.getDate() - i);
+        const s = d.toISOString().split('T')[0];
+        if (sorted.includes(s)) cur++;
+        else if (i > 0) break; // allow today to be missing
+      }
+      // If today not meditated, check from yesterday
+      if (!sorted.includes(todayStr)) {
+        cur = 0;
+        for (let i = 1; i < 365; i++) {
+          const d = new Date(); d.setDate(d.getDate() - i);
+          const s = d.toISOString().split('T')[0];
+          if (sorted.includes(s)) cur++;
+          else break;
+        }
+      }
+
+      // Best streak
+      let best = 1, run = 1;
+      for (let i = 1; i < sorted.length; i++) {
+        const prev = new Date(sorted[i-1]), curr = new Date(sorted[i]);
+        const diff = (curr - prev) / 86400000;
+        if (diff === 1) { run++; if (run > best) best = run; }
+        else run = 1;
+      }
+      if (cur > best) best = cur;
+      return { current: cur, best, total };
+    }
+
+    function renderStreak() {
+      const days = getDays();
+      const { current, best, total } = calcStreak(days);
+      document.getElementById('stat-current').textContent = current;
+      document.getElementById('stat-best').textContent    = best;
+      document.getElementById('stat-total').textContent   = total;
+
+      const cal = document.getElementById('calendar');
+      cal.innerHTML = '';
+      const today = new Date(); today.setHours(0,0,0,0);
+      const start = new Date(today); start.setDate(today.getDate() - 34);
+      start.setDate(start.getDate() - start.getDay()); // align to Sunday
+
+      for (let i = 0; i < 35; i++) {
+        const d = new Date(start); d.setDate(start.getDate() + i);
+        const s = d.toISOString().split('T')[0];
+        const isToday    = d.getTime() === today.getTime();
+        const isFuture   = d > today;
+        const isDone     = days.includes(s);
+
+        const cell = document.createElement('div');
+        cell.className = 'streak-day' + (isFuture ? ' future' : isDone ? ' completed' : ' missed') + (isToday ? ' today' : '');
+        cell.setAttribute('role', 'gridcell');
+        cell.setAttribute('aria-label', s + (isDone ? ' (meditated)' : isToday ? ' (today)' : ''));
+        cell.title = s;
+
+        if (isToday && !isDone) {
+          const dot = document.createElement('div');
+          dot.style.cssText = 'width:5px;height:5px;border-radius:50%;background:#A78BFA;';
+          cell.appendChild(dot);
+        }
+        cal.appendChild(cell);
+      }
+
+      const quotes = [
+        '"The mind is like water. When it is turbulent, it is difficult to see. When it is calm, everything becomes clear."',
+        '"Meditation is not about becoming a different person. It is about training in awareness."',
+        '"The present moment always will have been. You cannot lose what you have given yourself."',
+        '"Within you there is a stillness and a sanctuary to which you can retreat at any time."',
+        '"Peace comes from within. Do not seek it without." — Siddhartha Gautama',
+      ];
+      document.getElementById('streak-quote').textContent = quotes[current % quotes.length];
+    }
+
+    document.getElementById('log-today').addEventListener('click', () => {
+      logToday();
+      const btn = document.getElementById('log-today');
+      const orig = btn.textContent;
+      btn.textContent = '✓ Logged!';
+      btn.style.color = '#34D399';
+      setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 2200);
+    });
+
+    renderStreak();
+
+    // ─── Technique Modal ──────────────────────────────────────────
+    const TECHNIQUES = {
+      breath: {
+        title: 'Breath Focus', color: '#A78BFA', duration: '5–20 minutes',
+        steps: [
+          'Find a comfortable seated position. Close your eyes gently.',
+          'Bring attention to the natural flow of your breath — not controlling it, just noticing.',
+          'Feel the sensation of air entering through your nostrils.',
+          'Notice the brief pause at the top of the inhale.',
+          'Feel the breath release, and the pause at the bottom of the exhale.',
+          'When the mind wanders, gently and without judgment return to the breath.',
+          'Let each breath be a fresh beginning.',
+        ],
+        tip: 'Counting can help: silently say "one" on each exhale up to ten, then restart. The moment you notice you\'ve lost count is a moment of awakening.',
+      },
+      body: {
+        title: 'Body Scan', color: '#818CF8', duration: '10–30 minutes',
+        steps: [
+          'Lie down or sit comfortably. Let your eyes close.',
+          'Take three slow, deep breaths to settle.',
+          'Bring attention to the crown of your head.',
+          'Slowly move awareness downward: forehead, face, jaw, neck, shoulders.',
+          'Notice sensations — warmth, tension, tingling, neutrality — without trying to change them.',
+          'Continue through chest, arms, hands, abdomen, lower back, hips.',
+          'Move through legs, calves, feet, and all the way to your toes.',
+        ],
+        tip: 'If you find tension, simply breathe toward that area on the inhale, and allow it to soften on the exhale. You are not fixing — you are witnessing.',
+      },
+      loving: {
+        title: 'Loving-Kindness', color: '#F472B6', duration: '10–20 minutes',
+        steps: [
+          'Sit comfortably. Breathe softly until you feel settled.',
+          'Bring to mind someone you love easily — a child, a pet, a dear friend.',
+          'Feel the warmth that naturally arises. Let it fill your chest.',
+          'Silently offer: "May you be happy. May you be well. May you be at peace."',
+          'Now gently turn this wish toward yourself: "May I be happy. May I be well."',
+          'Expand outward to neutral people, then difficult people, then all beings everywhere.',
+          'Rest in the open field of goodwill, without directing it anywhere.',
+        ],
+        tip: 'Self-compassion can feel unfamiliar or even difficult. Start there anyway — it is the root from which compassion for others grows.',
+      },
+      mindfulness: {
+        title: 'Mindfulness', color: '#34D399', duration: '5–45 minutes',
+        steps: [
+          'Sit with an upright, relaxed posture. Close your eyes.',
+          'Choose an anchor: the breath, ambient sounds, or bodily sensations.',
+          'Rest your full attention on this anchor.',
+          'Notice when a thought, emotion, or sensation pulls you away.',
+          'Label it softly — "thinking," "planning," "feeling" — without self-criticism.',
+          'Return to the anchor. This returning is the practice.',
+          'With time, awareness itself becomes the anchor.',
+        ],
+        tip: 'There is no such thing as a bad meditation session. Every moment you notice the mind has wandered is a moment of pure awareness — that IS the practice.',
+      },
+    };
+
+    function openModal(key) {
+      const t = TECHNIQUES[key];
+      document.getElementById('modal-body').innerHTML = `
+        <p style="color:${t.color};" class="text-xs font-semibold tracking-widest uppercase mb-4">${t.duration}</p>
+        <h2 id="modal-heading" class="font-heading text-2xl font-bold text-white mb-5">${t.title}</h2>
+        <ol class="space-y-3.5 mb-6">
+          ${t.steps.map((s,i) => `
+            <li class="flex items-start gap-3 text-sm text-gray-300 leading-relaxed">
+              <span class="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5" style="background:rgba(167,139,250,0.12);color:${t.color};">${i+1}</span>
+              ${s}
+            </li>`).join('')}
+        </ol>
+        <div class="rounded-xl p-4 text-sm text-gray-400 italic leading-relaxed" style="background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.07);">
+          <span style="color:${t.color};font-style:normal;font-weight:600;">Tip: </span>${t.tip}
+        </div>
+      `;
+      const modal = document.getElementById('modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('modal-bg').addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // Keyboard support for technique cards
+    document.querySelectorAll('[role="button"]').forEach(el => {
+      el.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+Given the requirements, we will be using Python with Flask for the backend and HTML, CSS, and JavaScript for the frontend. We will also use SQLAlchemy for the database and WTForms for form handling. 
+
+Here are the core classes, functions, and methods that will be necessary:
+
+1. `Poem`: This class will represent a poem in the database. It will have fields for the title, text, author, and date posted.
+
+2. `Comment`: This class will represent a comment in the database. It will have fields for the comment text, the poem it's associated with, and the date it was posted.
+
+3. `PoemForm`: This class will represent the form for uploading a new poem. It will have fields for the title, text, and author.
+
+4. `CommentForm`: This class will represent the form for posting a new comment. It will have a field for the comment text.
+
+5. `index()`: This function will handle requests to the homepage. It will fetch the most recent poems from the database and render them on the page.
+
+6. `poem()`: This function will handle requests to a specific poem's page. It will fetch the poem and its comments from the database and render them on the page.
+
+7. `upload()`: This function will handle requests to the upload page. It will display the upload form and handle form submissions.
+
+8. `post_comment()`: This function will handle posting a new comment. It will add the comment to the database and refresh the page.
+
+Now, let's start with the entrypoint file, `app.py`.
+
+app.py
+```python
+from flask import Flask, render_template, request, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
+from forms import PoemForm, CommentForm
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+db = SQLAlchemy(app)
+
+from models import Poem, Comment
+
+@app.route('/')
+def index():
+    poems = Poem.query.order_by(Poem.date_posted.desc()).all()
+    return render_template('index.html', poems=poems)
+
+@app.route('/poem/<int:poem_id>', methods=['GET', 'POST'])
+def poem(poem_id):
+    poem = Poem.query.get(poem_id)
+    form = CommentForm()
+
+    if form.validate_on_submit():
+        comment = Comment(text=form.text.data, poem_id=poem_id)
+        db.session.add(comment)
+        db.session.commit()
+        return redirect(url_for('poem', poem_id=poem_id))
+
+    comments = Comment.query.filter_by(poem_id=poem_id).all()
+    return render_template('poem.html', poem=poem, comments=comments, form=form)
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    form = PoemForm()
+
+    if form.validate_on_submit():
+        poem = Poem(title=form.title.data, text=form.text.data, author=form.author.data)
+        db.session.add(poem)
+        db.session.commit()
+        return redirect(url_for('index'))
+
+    return render_template('upload.html', form=form)
+
+if __name__ == '__main__':
+    db.create_all()
+    app.run(debug=True)
+```
+
+Next, let's create the `models.py` file.
+
+models.py
+```python
+from app import db
+from datetime import datetime
+
+class Poem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    text = db.Column(db.Text, nullable=False)
+    author = db.Column(db.String(50), nullable=False)
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    poem_id = db.Column(db.Integer, db.ForeignKey('poem.id'), nullable=False)
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
+```
+
+Next, let's create the `forms.py` file.
+
+forms.py
+```python
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, SubmitField
+from wtforms.validators import DataRequired
+
+class PoemForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    text = TextAreaField('Text', validators=[DataRequired()])
+    author = StringField('Author', validators=[DataRequired()])
+    submit = SubmitField('Upload')
+
+class CommentForm(FlaskForm):
+    text = TextAreaField('Comment', validators=[DataRequired()])
+    submit = SubmitField('Post')
+```
+
+Finally, we need to create the HTML templates. We'll need `index.html`, `poem.html`, and `upload.html`. I'll provide a basic structure for these files, but you'll need to fill in the details based on your specific design requirements.
+
+index.html
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Poem Website</title>
+</head>
+<body>
+    <h1>Welcome to the Poem Website</h1>
+    <!-- Loop through the poems and display them -->
+    {% for poem in poems %}
+        <h2>{{ poem.title }}</h2>
+        <p>{{ poem.text[:100] }}...</p>
+        <a href="{{ url_for('poem', poem_id=poem.id) }}">Read More</a>
+    {% endfor %}
+</body>
+</html>
+```
+
+poem.html
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ poem.title }}</title>
+</head>
+<body>
+    <h1>{{ poem.title }}</h1>
+    <p>{{ poem.text }}</p>
+    <p>By {{ poem.author }} on {{ poem.date_posted }}</p>
+
+    <!-- Display the comment form -->
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.text.label }}<br>
+        {{ form.text(size=32) }}<br>
+        {{ form.submit() }}
+    </form>
+
+    <!-- Loop through the comments and display them -->
+    {% for comment in comments %}
+        <p>{{ comment.text }}</p>
+        <p>Posted on {{ comment.date_posted }}</p>
+    {% endfor %}
+</body>
+</html>
+```
+
+upload.html
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload a Poem</title>
+</head>
+<body>
+    <h1>Upload a Poem</h1>
+
+    <!-- Display the upload form -->
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.title.label }}<br>
+        {{ form.title(size=32) }}<br>
+        {{ form.text.label }}<br>
+        {{ form.text() }}<br>
+        {{ form.author.label }}<br>
+        {{ form.author(size=32) }}<br>
+        {{ form.submit() }}
+    </form>
+</body>
+</html>
+```
+
+This is a basic implementation of the website. There are many ways to expand and improve this, such as adding user authentication, improving the design, adding more features, etc. But this should give you a good starting point.

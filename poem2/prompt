@@ -1,0 +1,11 @@
+create a website that shows poems
+
+Design Aesthetic: The website should have a clean, minimalistic, and professional design. The color scheme should be soothing and not too bright, to keep the focus on the poems. The typography should be elegant and easy to read.
+Homepage: The homepage should display a list of poems, sorted by the most recent ones. Each entry should show the title of the poem, the first few lines, and the name of the author. There should be an option to click on the poem to read it in full.
+Poem Page: Each poem should have its own page. The poem page should display the full text of the poem, the name of the author, and the date it was posted. The design should be simple and focus on the text of the poem.
+Upload Feature: There should be a feature for the site owner to upload new poems. This could be a simple form that includes fields for the title of the poem, the text of the poem, and the name of the author.
+Comment Section: Each poem page should have a comment section below the text of the poem. Visitors should be able to leave comments without creating an account. There should be a moderation feature for the site owner to approve or delete comments.
+Responsive Design: The website should be responsive and work well on both desktop and mobile devices.
+SEO Friendly: The website should be SEO friendly to help attract more visitors. This includes using appropriate meta tags, having a fast load time, and being mobile-friendly.
+Privacy & Legal: The website should have a privacy policy and terms of service page.
+Contact Page: There should be a contact page where visitors can send messages or inquiries to the site owner.

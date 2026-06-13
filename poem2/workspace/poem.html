@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ poem.title }}</title>
+</head>
+<body>
+    <h1>{{ poem.title }}</h1>
+    <p>{{ poem.text }}</p>
+    <p>By {{ poem.author }} on {{ poem.date_posted }}</p>
+
+    <!-- Display the comment form -->
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.text.label }}<br>
+        {{ form.text(size=32) }}<br>
+        {{ form.submit() }}
+    </form>
+
+    <!-- Loop through the comments and display them -->
+    {% for comment in comments %}
+        <p>{{ comment.text }}</p>
+        <p>Posted on {{ comment.date_posted }}</p>
+    {% endfor %}
+</body>
+</html>

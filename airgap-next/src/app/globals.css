@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  /* Warm craft palette */
+  --color-cream:     #F6F0E4;
+  --color-parchment: #EDE4D0;
+  --color-warmtan:   #C9A97A;
+  --color-rust:      #B85C38;
+  --color-bark:      #7A4E2D;
+  --color-forest:    #3B5249;
+  --color-ink:       #2C2416;
+  --color-fog:       #8C8070;
+  --color-paper:     #FDFAF4;
+
+  --font-display: var(--font-caveat), cursive;
+  --font-body:    var(--font-quicksand), system-ui, sans-serif;
+  --font-ui:      var(--font-dmsans), system-ui, sans-serif;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Paper grain overlay */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Focus rings — keyboard nav (UX Pro Max) */
+:focus-visible {
+  outline: 2px solid var(--color-rust);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-body    { font-family: var(--font-body); }
+  .font-ui      { font-family: var(--font-ui); }
+}

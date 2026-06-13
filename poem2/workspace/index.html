@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Poem Website</title>
+</head>
+<body>
+    <h1>Welcome to the Poem Website</h1>
+    <!-- Loop through the poems and display them -->
+    {% for poem in poems %}
+        <h2>{{ poem.title }}</h2>
+        <p>{{ poem.text[:100] }}...</p>
+        <a href="{{ url_for('poem', poem_id=poem.id) }}">Read More</a>
+    {% endfor %}
+</body>
+</html>

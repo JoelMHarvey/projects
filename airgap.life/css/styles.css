@@ -1,0 +1,816 @@
+/* ============================================
+   AIRGAP.LIFE — Stylesheet
+   Warm, craft, analog aesthetic
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Quicksand:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ---- Tokens ---- */
+:root {
+  --cream:    #F6F0E4;
+  --parchment:#EDE4D0;
+  --warm-tan: #C9A97A;
+  --rust:     #B85C38;
+  --bark:     #7A4E2D;
+  --forest:   #3B5249;
+  --ink:      #2C2416;
+  --fog:      #8C8070;
+  --white:    #FDFAF4;
+
+  --font-display: 'Caveat', cursive;
+  --font-body:    'Quicksand', system-ui, sans-serif;
+  --font-ui:      'DM Sans', system-ui, sans-serif;
+
+  --max-w: 1100px;
+  --gutter: clamp(1.5rem, 5vw, 3rem);
+}
+
+/* ---- Base ---- */
+html { font-size: 18px; scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: var(--rust); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---- Utility ---- */
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--gutter); }
+.text-center { text-align: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+/* ---- Typography ---- */
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.2; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+h3 { font-size: clamp(1.3rem, 2.5vw, 1.7rem); }
+h4 { font-size: 1.1rem; }
+p  { margin-bottom: 1rem; }
+small { font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ---- Grain texture overlay ---- */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ============================================
+   NAV
+   ============================================ */
+.site-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--cream);
+  border-bottom: 1px solid var(--parchment);
+  padding: 1rem 0;
+}
+
+.site-nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--rust); }
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--fog);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); text-decoration: none; }
+
+.nav-cta {
+  background: var(--rust);
+  color: var(--white) !important;
+  padding: 0.45rem 1.1rem;
+  border-radius: 2px;
+}
+.nav-cta:hover { background: var(--bark); }
+
+/* ============================================
+   HERO
+   ============================================ */
+.hero {
+  padding: clamp(4rem, 10vw, 8rem) 0 clamp(3rem, 8vw, 6rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-rule {
+  display: block;
+  width: 3rem;
+  height: 2px;
+  background: var(--rust);
+  margin: 0 auto 1.5rem;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  max-width: 18ch;
+  margin: 0 auto 1.5rem;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--rust);
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  color: var(--fog);
+  max-width: 52ch;
+  margin: 0 auto 2.5rem;
+  font-weight: 300;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Decorative horizontal rule */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--parchment);
+  margin: 0;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.85rem 2rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--rust);
+  color: var(--white);
+}
+.btn-primary:hover { background: var(--bark); text-decoration: none; color: var(--white); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--warm-tan);
+}
+.btn-secondary:hover { border-color: var(--ink); text-decoration: none; }
+
+/* ============================================
+   MANIFESTO STRIP
+   ============================================ */
+.manifesto {
+  background: var(--forest);
+  color: var(--cream);
+  padding: clamp(3rem, 6vw, 5rem) 0;
+}
+
+.manifesto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+}
+
+.manifesto h2 { color: var(--cream); }
+
+.manifesto-item {
+  border-top: 2px solid var(--warm-tan);
+  padding-top: 1rem;
+}
+
+.manifesto-item h4 {
+  font-family: var(--font-display);
+  color: var(--warm-tan);
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.manifesto-item p {
+  color: #c8bfae;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ============================================
+   THIS WEEK'S COURSE (Featured)
+   ============================================ */
+.featured {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+}
+
+.section-label {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rust);
+  margin-bottom: 0.75rem;
+}
+
+.featured-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border: 1px solid var(--parchment);
+  background: var(--white);
+  overflow: hidden;
+  margin-top: 2.5rem;
+}
+
+.featured-image {
+  background: var(--parchment);
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.featured-image .craft-illustration {
+  font-size: 8rem;
+  opacity: 0.6;
+}
+
+.featured-badge {
+  position: absolute;
+  top: 1.5rem; left: 1.5rem;
+  background: var(--forest);
+  color: var(--cream);
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+}
+
+.featured-content {
+  padding: clamp(2rem, 4vw, 3.5rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.featured-content .section-label { margin-bottom: 0.5rem; }
+
+.featured-content h2 {
+  margin-bottom: 1rem;
+}
+
+.featured-content .desc {
+  color: var(--fog);
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.course-pillars {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.course-pillars li {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--fog);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.course-pillars li::before {
+  content: '→';
+  color: var(--rust);
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+}
+
+.featured-price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.price-free {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--forest);
+}
+
+.price-free-note {
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--fog);
+}
+
+/* ============================================
+   COURSE PATHWAY STEPS
+   ============================================ */
+.pathway {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  background: var(--parchment);
+}
+
+.pathway h2 { margin-bottom: 0.5rem; }
+.pathway > .container > p { color: var(--fog); margin-bottom: 3rem; max-width: 55ch; }
+
+.pathway-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.5px;
+  background: var(--warm-tan);
+  border: 1.5px solid var(--warm-tan);
+}
+
+.step {
+  background: var(--parchment);
+  padding: 2rem 1.75rem;
+  position: relative;
+}
+
+.step-num {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--parchment);
+  -webkit-text-stroke: 1.5px var(--warm-tan);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+.step h4 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.step p {
+  font-size: 0.9rem;
+  color: var(--fog);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ============================================
+   COURSE CATALOGUE
+   ============================================ */
+.catalogue {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+}
+
+.catalogue-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.catalogue-header a {
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--rust);
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.course-card {
+  background: var(--white);
+  border: 1px solid var(--parchment);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.course-card:hover { box-shadow: 0 4px 20px rgba(44,36,22,0.1); transform: translateY(-2px); }
+
+.card-thumb {
+  background: var(--parchment);
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+}
+
+.card-body { padding: 1.25rem 1.5rem 1.5rem; }
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.card-tag {
+  font-family: var(--font-ui);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fog);
+}
+
+.card-price {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+}
+.card-price.free { background: #e8f0e9; color: var(--forest); }
+.card-price.member { background: #f5e8e0; color: var(--rust); }
+
+.card-body h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.4rem;
+}
+
+.card-body p {
+  font-size: 0.88rem;
+  color: var(--fog);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ============================================
+   MEMBERSHIP SECTION
+   ============================================ */
+.membership {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.membership h2 { color: var(--cream); max-width: 20ch; margin: 0 auto 1rem; }
+.membership .sub { color: #b0a898; max-width: 50ch; margin: 0 auto 3rem; }
+
+.membership-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.mem-card {
+  border: 1px solid #3a3328;
+  padding: 2.5rem 2rem;
+  background: #231f18;
+}
+
+.mem-card.featured-plan {
+  border-color: var(--warm-tan);
+  background: #2e2820;
+}
+
+.mem-card-label {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--warm-tan);
+  margin-bottom: 1rem;
+}
+
+.mem-card-price {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--cream);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.mem-card-price span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #8c8070;
+  font-family: var(--font-ui);
+}
+
+.mem-card-desc {
+  font-size: 0.9rem;
+  color: #8c8070;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.mem-features {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.mem-features li {
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  color: #c8bfae;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #3a3328;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.mem-features li::before {
+  content: '✓';
+  color: var(--warm-tan);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.btn-plan {
+  width: 100%;
+  text-align: center;
+  display: block;
+  padding: 0.9rem;
+}
+
+.btn-plan-outline {
+  border: 1.5px solid #3a3328;
+  color: var(--cream);
+  background: transparent;
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  display: block;
+  padding: 0.9rem;
+  transition: border-color 0.2s;
+}
+.btn-plan-outline:hover { border-color: var(--warm-tan); }
+
+/* ============================================
+   READING SHELF (bonus section)
+   ============================================ */
+.reading-shelf {
+  padding: clamp(3rem, 7vw, 6rem) 0;
+  background: var(--cream);
+}
+
+.shelf-intro { color: var(--fog); max-width: 52ch; margin-bottom: 2.5rem; }
+
+.book-row {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--warm-tan) transparent;
+}
+
+.book {
+  flex: 0 0 130px;
+  text-align: center;
+}
+
+.book-spine {
+  width: 130px;
+  height: 185px;
+  border-radius: 2px 4px 4px 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.9);
+  text-align: center;
+  padding: 0.5rem;
+  line-height: 1.3;
+  box-shadow: 3px 3px 10px rgba(44,36,22,0.2);
+}
+
+.book-title {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  color: var(--fog);
+  line-height: 1.3;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.site-footer {
+  background: var(--ink);
+  color: #6b6055;
+  padding: 3rem 0;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--parchment);
+}
+.footer-logo span { color: var(--rust); }
+
+.footer-tagline {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: #8c8070;
+}
+
+.footer-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-links a {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6055;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--parchment); text-decoration: none; }
+
+.footer-copy {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: #4a4438;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .featured-card { grid-template-columns: 1fr; }
+  .featured-image { min-height: 220px; }
+  .course-pillars { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+  .pathway-steps { gap: 1px; }
+}
+
+@media (max-width: 480px) {
+  .hero-actions { flex-direction: column; align-items: center; }
+  .catalogue-header { flex-direction: column; }
+}
+
+/* ============================================
+   ACCESSIBILITY & INTERACTION (UX Pro Max)
+   ============================================ */
+
+/* Focus rings — keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Remove default outline only when replaced by :focus-visible */
+:focus:not(:focus-visible) { outline: none; }
+
+/* Cursor pointer on all interactive non-button/anchor elements */
+.course-card,
+.mem-card,
+.book,
+.rec-book,
+.step,
+.manifesto-item,
+[role="listitem"]:has(a) {
+  cursor: default;
+}
+
+.course-card { cursor: pointer; }
+.btn { cursor: pointer; }
+.nav-cta { cursor: pointer; }
+
+/* Ensure all anchor-wrapped cards get pointer */
+a .course-card,
+a.next-course-link,
+a.btn { cursor: pointer; }
+
+/* Hover states — smooth, 200ms (within 150–300ms spec) */
+.course-card {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.nav-links a {
+  transition: color 0.2s ease;
+}
+
+.btn-primary,
+.btn-secondary {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Touch target — min 44×44px on nav items */
+.nav-links a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn {
+  min-height: 44px;
+}
+
+/* Card icon area — replace emoji placeholder sizing */
+.card-thumb {
+  min-height: 160px;
+}
+
+.card-thumb svg {
+  width: 64px;
+  height: 64px;
+  stroke: var(--bark);
+  opacity: 0.6;
+}
+
+/* Caveat headings — bump size slightly, it reads smaller than serif */
+h1 { font-size: clamp(2.8rem, 7vw, 5rem); }
+h2 { font-size: clamp(2rem, 4.5vw, 3.2rem); }
+h3 { font-size: clamp(1.4rem, 2.8vw, 1.9rem); }
+
+/* Quicksand body — slightly larger for readability */
+body { font-size: 17px; }
+
+/* Line length — cap at ~70ch per spec */
+.course-content p,
+.hero-sub,
+.manifesto-item p,
+.card-body p {
+  max-width: 68ch;
+}
+
+/* prefers-reduced-motion — disable all transitions/animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -80,8 +80,6 @@ Has its own `.claude/CLAUDE.md` — read that when working inside this project.
 
 ---
 
----
-
 ### Chatbot (`chatbot/`)
 
 Streamlit PDF Q&A app using LangChain + OpenAI. Loads `.pkl` vector stores (FAISS) from pre-processed PDFs. Own `venv/`.
@@ -98,13 +96,36 @@ Env: `OPENAI_API_KEY`
 
 ### Talk to Santa (`talktosanta/`)
 
-Express/Node.js + MongoDB app. JWT auth, QR code generation. Vanilla JS frontend in `frontend/`. No build step — static files served by Express.
+Express/Node.js + MongoDB app. JWT auth, QR code generation, Stripe payments, Claude AI chat, nodemailer. Server lives at `frontend/server.js`; routes in `routes/`; models in `models/`. Vanilla JS frontend in `frontend/`. No build step — static files served by Express.
 
 ```bash
 cd talktosanta
 npm install
-node script.js
+npm start          # runs node frontend/server.js
 ```
+
+Env: `MONGODB_URI`, `JWT_SECRET`, `ANTHROPIC_API_KEY`, `STRIPE_SECRET_KEY`, `EMAIL_*`
+
+---
+
+### PercentBS (`percentbs/`)
+
+Telegram bot that scores factual claims against public evidence using Claude. Users submit claims, bot classifies (verifiable/contested/indeterminate), scores verifiable ones 0–100%, community votes true/false.
+
+Three files: `db.py` (SQLite via stdlib), `ai.py` (Claude scoring), `bot.py` (telegram handlers). DB auto-initialised on first run at `percentbs/percentbs.db`.
+
+Commands: `/check`, `/vote`, `/status`, `/recent`, `/top`, `/disputed`. Plain text treated as `/check`.
+
+```bash
+cd percentbs
+PBS_TELEGRAM_TOKEN=... ANTHROPIC_API_KEY=... python3 bot.py
+# or background:
+PBS_TELEGRAM_TOKEN=... ANTHROPIC_API_KEY=... ./start.sh
+kill $(cat percentbs.pid)
+tail -f percentbs.log
+```
+
+Uses root `.venv/` (same as language bots). Env: `PBS_TELEGRAM_TOKEN`, `ANTHROPIC_API_KEY`.
 
 ---
 
@@ -117,6 +138,35 @@ SwiftUI iOS app. Open `Mofu-chan.xcodeproj` in Xcode. Main files: `ContentView.s
 ### claude-howto (`claude-howto/`)
 
 Documentation/tutorial project for Claude Code features (slash commands, memory, skills, subagents, MCP, hooks). Multilingual (`ja/`, `uk/`, `vi/`, `zh/`). Read-only reference — no build step.
+
+---
+
+### Poem site (`poem2/`)
+
+Flask web app with SQLite for displaying/uploading poems. Main app in `poem2/workspace/`.
+
+```bash
+cd poem2/workspace
+source venv/bin/activate
+./run.sh          # or: flask run
+```
+
+---
+
+### JMH site (`jmh/`)
+
+Jekyll/GitHub Pages personal site using the Slate remote theme.
+
+```bash
+cd jmh
+bundle exec jekyll serve
+```
+
+---
+
+### MindfulPath (`mindfulpath/`)
+
+Single-file static landing page (Tailwind CDN). Open `index.html` directly in browser — no server needed.
 
 ---
 

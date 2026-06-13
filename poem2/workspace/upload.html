@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload a Poem</title>
+</head>
+<body>
+    <h1>Upload a Poem</h1>
+
+    <!-- Display the upload form -->
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.title.label }}<br>
+        {{ form.title(size=32) }}<br>
+        {{ form.text.label }}<br>
+        {{ form.text() }}<br>
+        {{ form.author.label }}<br>
+        {{ form.author(size=32) }}<br>
+        {{ form.submit() }}
+    </form>
+</body>
+</html>
