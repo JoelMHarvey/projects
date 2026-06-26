@@ -1,0 +1,19 @@
+{
+  "hook": "'Therapists charge too much.' Do they, though?",
+  "vo": [
+    "A client pays seventy to a hundred dollars a week for therapy.",
+    "The therapist doing the work might see around a third of that.",
+    "The rest goes to the platform sitting in the middle.",
+    "It's not the therapist who's overcharging. It's the model that's broken."
+  ],
+  "onscreen_text": [
+    "Client pays: $70–100/week",
+    "Therapist sees: ~a third",
+    "The rest? The platform.",
+    "The model is the problem."
+  ],
+  "cta": "Take out the middleman, and it's fair for everyone. That's Faresay.",
+  "broll_notes": "Close-up of a phone screen showing a payment receipt, then a calculator with numbers, then a simple two-column split graphic — 'client pays' on one side, 'therapist keeps' on the other. No faces. Muted, natural lighting.",
+  "_idea_id": "charge-too-much-004",
+  "_status": "draft"
+}

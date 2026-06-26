@@ -1,0 +1,19 @@
+{
+  "hook": "You pay for therapy. Want to know how little your therapist might actually keep?",
+  "vo": [
+    "On the big platforms a client can pay seventy to a hundred dollars a week.",
+    "The therapist doing the work might see around a third of that.",
+    "The rest goes to the platform.",
+    "That gap matters — for therapists, and probably for your care."
+  ],
+  "onscreen_text": [
+    "Client pays: $70–100/week",
+    "Therapist keeps: ~a third",
+    "The rest? The platform.",
+    "That gap has a cost."
+  ],
+  "cta": "There's a fairer way to do this.",
+  "broll_notes": "Simple split-screen animation: left side shows money going in, right side shows a much smaller portion landing in a separate pot. No faces, no brand names. Muted palette. Numbers appear as plain text on screen, no fancy graphics.",
+  "_idea_id": "the-gap-003",
+  "_status": "draft"
+}

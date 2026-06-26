@@ -1,0 +1,19 @@
+{
+  "hook": "In the UK, your therapy notes are 'special category' data — the most protected kind there is.",
+  "vo": [
+    "UK GDPR puts mental-health information in a special category.",
+    "The law treats it as the most sensitive data there is.",
+    "Faresay is built to that standard — not above it, not below it.",
+    "Your records stay with you and your therapist."
+  ],
+  "onscreen_text": [
+    "Mental-health data: highest legal protection",
+    "UK GDPR — special category",
+    "Faresay is built to that standard",
+    "Your records. Your therapist. Nobody else."
+  ],
+  "cta": "Your records stay with you and your therapist. That's the idea.",
+  "broll_notes": "Close-up of a locked padlock resting on a plain notebook, then a phone screen showing a simple, clean scheduling interface — no faces, no people, neutral desk setting.",
+  "_idea_id": "uk-data-law-017",
+  "_status": "draft"
+}

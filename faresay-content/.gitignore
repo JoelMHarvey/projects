@@ -1,0 +1,17 @@
+# Regenerable artifacts — rebuild with render.py / schedule_export.py
+out/
+exports/
+
+# Voiceover recordings (large binaries — keep locally; force-add if you want them tracked)
+voiceover/
+
+# Python / env
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+.env.*
+
+# OS
+.DS_Store

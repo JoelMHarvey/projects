@@ -1,0 +1,75 @@
+{
+  "_README": "Verified, screen-safe facts. NEVER put a number on screen that isn't here, phrased as written. Verified June 2026. Each fact has a `safe_phrasing` (use verbatim or close) and a `do_not_say` guardrail.",
+
+  "ftc_fine": {
+    "claim": "BetterHelp shared mental-health data and was penalised",
+    "safe_phrasing": "In 2023 the US FTC ordered BetterHelp to pay $7.8 million and banned it from sharing users' sensitive mental-health data with Facebook and others for advertising — after promising it wouldn't.",
+    "confidence": "rock_solid",
+    "do_not_say": "Don't claim it was a criminal conviction or an admission of guilt — it was a settlement; BetterHelp denied wrongdoing.",
+    "source": "https://www.ftc.gov/news-events/news/press-releases/2023/07/ftc-gives-final-approval-order-banning-betterhelp-sharing-sensitive-health-data-advertising"
+  },
+
+  "pay_gap": {
+    "claim": "Therapists keep well under half of what clients pay on big platforms",
+    "safe_phrasing": "On the big platforms a client can pay $70–100 a week, while the therapist doing the work might see around a third of it.",
+    "confidence": "solid",
+    "do_not_say": "Do NOT say 'they take 50%' or quote a fixed commission percentage — it's a flat per-engagement pay model, so frame it as a GAP, not a cut.",
+    "source": "https://www.glassdoor.com/Hourly-Pay/BetterHelp-Therapist-Hourly-Pay-E1304061_D_KO11,20.htm"
+  },
+
+  "revenue": {
+    "claim": "BetterHelp generates around a billion dollars a year",
+    "safe_phrasing": "BetterHelp generates around a billion dollars a year in revenue — for providing a platform.",
+    "confidence": "solid",
+    "do_not_say": "Say REVENUE, not profit. Parent company Teladoc posted losses, so never say 'makes a billion in profit'.",
+    "source": "https://www.healthcaredive.com/news/teladoc-1-billion-net-loss-2024-betterhelp-challenges/741134/"
+  },
+
+  "client_cost": {
+    "claim": "Clients find the big platforms expensive",
+    "safe_phrasing": "Subscriptions on the big platforms commonly run around $280–400 a month.",
+    "confidence": "anecdotal_soft",
+    "do_not_say": "Use softly, as colour ('people online say it's pricey'), not as a hard headline stat.",
+    "source": "reported pricing / public forums"
+  },
+
+  "faresay_model": {
+    "claim": "Faresay's own pricing — the fair alternative",
+    "safe_phrasing": "Faresay is free to start, with an optional monthly plan that costs less than a single session. There is no commission on sessions — the only per-session cost is standard card processing, which Faresay keeps none of. Therapists keep their own clients, set their own prices, control their own data, and can run it from a phone.",
+    "confidence": "rock_solid_internal",
+    "do_not_say": "Do NOT say '15%' or any commission percentage — that was the PRE-PIVOT model and is wrong now. Faresay takes no commission.",
+    "source": "Faresay internal (pricing page)"
+  },
+
+  "uk_therapy_cost": {
+    "claim": "Private therapy in the UK is expensive for many people",
+    "safe_phrasing": "In the UK, a private therapy session usually costs somewhere between £50 and £90 for around 50 minutes.",
+    "confidence": "solid",
+    "do_not_say": "It varies a lot by region, experience and type of therapy (psychologists cost more) — present it as a typical range, never a single fixed price. Never imply Faresay sets client prices; therapists set their own.",
+    "source": "https://www.therapyroute.com/article/how-much-does-therapy-cost-in-the-uk-2025-guide-by-therapyroute"
+  },
+
+  "uk_waiting": {
+    "claim": "NHS mental-health waits in England are long",
+    "safe_phrasing": "In England, the longest waits for mental-health care now stretch close to two years — more than twice as long as the longest waits for physical-health treatment.",
+    "confidence": "solid",
+    "do_not_say": "This is the LONGEST waits, not the typical wait — never say 'everyone waits two years'. Never position Faresay as an NHS replacement or a crisis/emergency service.",
+    "source": "https://www.rethink.org/news-and-stories/media-centre/2025/02/new-analysis-of-nhs-data-on-mental-health-waiting-times/"
+  },
+
+  "uk_prevalence": {
+    "claim": "Mental-health need in England is widespread",
+    "safe_phrasing": "In England, around 1 in 4 people experience a mental-health problem each year, and roughly 1 in 6 have a common problem like anxiety or depression in any given week.",
+    "confidence": "rock_solid",
+    "do_not_say": "Context only — never imply Faresay treats, cures or improves any of this. No clinical-outcome claims.",
+    "source": "https://www.mind.org.uk/information-support/types-of-mental-health-problems/mental-health-facts-and-statistics/"
+  },
+
+  "uk_special_category": {
+    "claim": "UK law gives mental-health data the highest protection",
+    "safe_phrasing": "In the UK, information about your mental health is 'special category' data under UK GDPR — the law gives it the highest level of protection.",
+    "confidence": "rock_solid",
+    "do_not_say": "State the law, not a Faresay accreditation — don't claim a specific certification or ICO endorsement. Faresay is the processor; the therapist is the data controller.",
+    "source": "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/lawful-basis/special-category-data/what-is-special-category-data/"
+  }
+}

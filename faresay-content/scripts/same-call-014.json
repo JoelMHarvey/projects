@@ -1,0 +1,19 @@
+{
+  "hook": "Same video call. Same therapist. Very different split.",
+  "vo": [
+    "A client pays seventy to a hundred dollars for a session on one of the big platforms.",
+    "The therapist doing the work might see around a third of that.",
+    "Faresay takes no commission. Free to start. The only per-session cost is standard card processing — and we keep none of it.",
+    "Same call. The difference is where the money goes."
+  ],
+  "onscreen_text": [
+    "Client pays $70–100",
+    "Therapist sees ~a third",
+    "Faresay: no commission",
+    "Free to start"
+  ],
+  "cta": "There's a fairer way to do this.",
+  "broll_notes": "Split-screen: left side shows a laptop with a video call open, a payment notification slides in showing a large amount, then a smaller amount highlighted as 'therapist pay'. Right side mirrors the same video call, same fee, but the full amount is highlighted as 'therapist keeps'. No faces shown. Muted, clinical colour palette.",
+  "_idea_id": "same-call-014",
+  "_status": "draft"
+}

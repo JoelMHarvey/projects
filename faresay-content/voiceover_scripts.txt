@@ -1,0 +1,37 @@
+FARESAY — VOICEOVER SCRIPTS (paste into ElevenLabs)
+
+==== Script 1 — "The bench" (origin) ====
+save as: voiceover/origin-bench-001.mp3
+[Direction: personal, honest, a little angry but calm. This is your story — slow down, mean it.]
+
+I was training to be a counsellor when I found out something that shocked me.  On the big platforms a client can pay seventy to a hundred dollars a week, while the therapist doing the work might see around a third of it.  The platform pockets the rest. For providing a platform.  So I built something else. No commission on sessions. Free to start. You set your own prices and keep what you charge.  The only per-session cost is standard card processing — and Faresay keeps none of it.  I built the thing I want to use myself. If you're a therapist, come have a look.
+
+
+==== Script 2 — "$7.8 million" (data betrayal) ====
+save as: voiceover/data-betrayal-002.mp3
+[Direction: matter-of-fact, let the facts land. Slight pause before ‘$7.8 million’ and before ‘After promising it wouldn’t.’]
+
+A therapy app promised to keep your secrets. Then it got fined $7.8 million.  In 2023 the US FTC ordered BetterHelp to pay $7.8 million.  The reason: sharing users' sensitive mental-health data with Facebook for advertising.  After promising it wouldn't.  The people who came to that app were asking for help. Not to be targeted.  Your data should stay yours. That's the whole idea behind Faresay.
+
+
+==== Script 3 — "The gap" (the reveal) ====
+save as: voiceover/the-gap-003.mp3
+[Direction: curious, almost conspiratorial on the hook, then plain and clear on the numbers.]
+
+You pay for therapy. Want to know how little your therapist might actually keep?  On the big platforms a client can pay seventy to a hundred dollars a week.  The therapist doing the work might see around a third of that.  The rest goes to the platform.  That gap matters — for therapists, and probably for your care.  There's a fairer way to do this.
+
+
+==== Script 4 — "Therapists charge too much" (myth-bust) ====
+save as: voiceover/charge-too-much-004.mp3
+[Direction: start by voicing the criticism flatly, then push back firmly. Land hard on ‘the model that’s broken.’]
+
+'Therapists charge too much.' Do they, though?  A client pays seventy to a hundred dollars a week for therapy.  The therapist doing the work might see around a third of that.  The rest goes to the platform sitting in the middle.  It's not the therapist who's overcharging. It's the model that's broken.  Take out the middleman, and it's fair for everyone. That's Faresay.
+
+
+==== Script 5 — "Money in two days" (quiet proof) ====
+save as: voiceover/two-days-005.mp3
+[Direction: understated, quiet, unhurried. Anti-hype. Short sentences — let each one breathe.]
+
+A therapist ran her first session on Faresay this week.  Booked it from her phone.  Ran the video call through the platform.  Got paid. Money in two days.  No commission taken. Just standard card processing — which Faresay keeps none of.  That's it. That's the whole pitch.
+
+

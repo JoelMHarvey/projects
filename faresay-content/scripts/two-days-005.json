@@ -1,0 +1,19 @@
+{
+  "hook": "A therapist ran her first session on Faresay this week.",
+  "vo": [
+    "Booked it from her phone.",
+    "Ran the video call through the platform.",
+    "Got paid. Money in two days.",
+    "No commission taken. Just standard card processing — which Faresay keeps none of."
+  ],
+  "onscreen_text": [
+    "Booked. Video. Paid.",
+    "Money in 2 days",
+    "From a phone",
+    "No commission"
+  ],
+  "cta": "That's it. That's the whole pitch.",
+  "broll_notes": "Screen capture of the Faresay app on a phone: booking confirmation, video session interface, payment received notification. No presenter. Clean and unhurried.",
+  "_idea_id": "two-days-005",
+  "_status": "draft"
+}

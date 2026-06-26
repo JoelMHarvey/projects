@@ -1,0 +1,216 @@
+{
+  "_README": "Posting schedule + qualified-signal tracker. Drives the v0 manual-posting stage and feeds the v3 metrics loop. Edit via tracker.py (or by hand). 'score' = QUALIFIED signal attributed via the UTM (therapist sign-ups, /for-therapists hits in Plausible) — NOT views or likes.",
+  "base_url": "https://faresay.com",
+  "landing": {
+    "origin-bench-001": "/for-therapists",
+    "data-betrayal-002": "/trust",
+    "the-gap-003": "/pricing/explained",
+    "charge-too-much-004": "/compare",
+    "two-days-005": "/for-therapists",
+    "uk-waiting-015": "/for-therapists",
+    "uk-cost-016": "/pricing/explained",
+    "uk-data-law-017": "/trust",
+    "uk-need-018": "/for-therapists",
+    "_default": "/",
+    "billion-platform-006": "/compare",
+    "own-clients-007": "/for-therapists",
+    "own-notes-008": "/trust",
+    "less-than-session-009": "/pricing/explained",
+    "client-cost-010": "/pricing/explained",
+    "your-prices-011": "/for-therapists",
+    "promised-012": "/trust",
+    "rebuilt-it-013": "/for-therapists",
+    "same-call-014": "/compare"
+  },
+  "posts": [
+    {
+      "script": "data-betrayal-002",
+      "channel": "tiktok",
+      "date": "2026-06-29",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "Lead — strongest sourced fact."
+    },
+    {
+      "script": "data-betrayal-002",
+      "channel": "instagram_reels",
+      "date": "2026-06-29",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "Cross-post the keystone."
+    },
+    {
+      "script": "origin-bench-001",
+      "channel": "linkedin",
+      "date": "2026-06-30",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "Keystone — also pin to every bio."
+    },
+    {
+      "script": "origin-bench-001",
+      "channel": "tiktok",
+      "date": "2026-07-01",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "Cross-post the keystone."
+    },
+    {
+      "script": "the-gap-003",
+      "channel": "tiktok",
+      "date": "2026-07-02",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "charge-too-much-004",
+      "channel": "instagram_reels",
+      "date": "2026-07-03",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "own-notes-008",
+      "channel": "tiktok",
+      "date": "2026-07-06",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "two-days-005",
+      "channel": "linkedin",
+      "date": "2026-07-07",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "RECORD ONLY after a real first therapist exists."
+    },
+    {
+      "script": "billion-platform-006",
+      "channel": "instagram_reels",
+      "date": "2026-07-08",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "uk-data-law-017",
+      "channel": "tiktok",
+      "date": "2026-07-09",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "UK angle."
+    },
+    {
+      "script": "promised-012",
+      "channel": "tiktok",
+      "date": "2026-07-10",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "same-call-014",
+      "channel": "instagram_reels",
+      "date": "2026-07-13",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "uk-waiting-015",
+      "channel": "linkedin",
+      "date": "2026-07-14",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "UK — never frame as NHS replacement / crisis service."
+    },
+    {
+      "script": "own-clients-007",
+      "channel": "linkedin",
+      "date": "2026-07-15",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "uk-cost-016",
+      "channel": "instagram_reels",
+      "date": "2026-07-16",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "UK — keep cost a range, not a fixed price."
+    },
+    {
+      "script": "uk-need-018",
+      "channel": "tiktok",
+      "date": "2026-07-17",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "UK — context only, no clinical-outcome claims."
+    },
+    {
+      "script": "client-cost-010",
+      "channel": "tiktok",
+      "date": "2026-07-20",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "your-prices-011",
+      "channel": "linkedin",
+      "date": "2026-07-21",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "less-than-session-009",
+      "channel": "linkedin",
+      "date": "2026-07-22",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "rebuilt-it-013",
+      "channel": "tiktok",
+      "date": "2026-07-23",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": ""
+    },
+    {
+      "script": "charge-too-much-004",
+      "channel": "youtube_shorts",
+      "date": "2026-07-24",
+      "status": "planned",
+      "score": null,
+      "url": "",
+      "notes": "Re-post a strong angle on a 3rd channel."
+    }
+  ]
+}
