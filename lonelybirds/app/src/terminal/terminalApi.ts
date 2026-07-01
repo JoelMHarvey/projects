@@ -85,12 +85,12 @@ function isSessionStartPush(value: unknown): value is SessionStartPush {
 /**
  * Listen for "session starting" pushes for this terminal.
  *
- * STUB CONVENTION (note for the functions builder): a Realtime broadcast
+ * Delivery contract (see CONTRACTS.md "Push delivery"): a Realtime broadcast
  * channel `terminal:{device_id}`, event `session-start`, payload
- * SessionStartPush. `_shared/push.ts` is currently a logging stub; until real
- * APNs delivery lands, request-session / schedule-tick should mirror their
- * terminal pushes onto this channel so paired terminals auto-join.
- * Returns an unsubscribe function.
+ * SessionStartPush. `_shared/push.ts` is a logging stub, so request-session,
+ * respond-session and schedule-tick all mirror their terminal pushes onto
+ * this channel (via `_shared/realtime.ts`) — this is how paired terminals
+ * auto-join until real APNs delivery lands. Returns an unsubscribe function.
  */
 export function subscribeToSessionStart(
   deviceId: string,

@@ -12,6 +12,9 @@ supabase/
     0001_init.sql              tables + CHECK constraints (text "enums")
     0002_indexes_triggers.sql  indexes, updated_at trigger, pair-immutability trigger
     0003_rls.sql               helper functions + RLS policies for every table
+    0004_session_requester_and_connection_guards.sql
+                               sessions.requested_by_pet_id + server-side
+                               connection status-transition trigger
   functions/                   edge functions (owned by the functions builder)
 ```
 
@@ -97,7 +100,7 @@ evaluation: `is_pet_owner(pet_id)` and `is_connection_owner(connection_id)`
 | `availability_windows` | — | SELECT all; writes only for the pet's owner | read-all needed to compute schedule overlap for matching |
 | `devices` | — | ALL for the owner of the bound pet | `pair-device` / `device-heartbeat` write via service role |
 | `pairing_codes` | — | — (**no policies**, privileges revoked) | service-role only, per contract |
-| `connections` | — | SELECT/UPDATE/DELETE for either pet's owner; INSERT by the requester (`is_pet_owner(requested_by_pet_id)`, status must be `'pending'`) | mutual consent = partner owner updates status to `'active'` |
+| `connections` | — | SELECT/UPDATE/DELETE for either pet's owner; INSERT by the requester (`is_pet_owner(requested_by_pet_id)`, status must be `'pending'`) | mutual consent = partner owner updates status to `'active'`; the `connections_status_transition` trigger (0004) blocks the requester self-accepting, un-blocking, reverting to `pending`, and re-activating a connection with an open report |
 | `sessions` | — | SELECT for both connection owners | **no client writes** — sessions are created/updated only by edge functions (service role) |
 | `reports` | — | INSERT by a connection owner (`reporter_owner_id = auth.uid()`); SELECT own reports | review/status changes via service role |
 | `waitlist_signups` | INSERT only | INSERT only | no SELECT policy → the landing form must POST with `Prefer: return=minimal` (no `RETURNING`) |
