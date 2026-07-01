@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LonelyBirds — Live video companionship for caged birds</title>
+  <meta name="description" content="LonelyBirds connects lonely companion birds over live video while their owners are away. Every bird deserves a flock. Join the waitlist.">
+  <meta property="og:title" content="LonelyBirds — Every bird deserves a flock.">
+  <meta property="og:description" content="Live video companionship for caged birds while you're away. Join the waitlist.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://lonelybirds.app/">
+  <script defer data-domain="lonelybirds.app" src="https://plausible.io/js/script.js"></script>
+  <style>
+    /* ============ Dawn-light design tokens ============ */
+    :root {
+      --amber: #F59E0B;
+      --amber-deep: #B45309;
+      --amber-soft: #FDE68A;
+      --teal: #0F766E;
+      --teal-deep: #115E59;
+      --teal-soft: #CCFBF1;
+      --cream: #FFFBEB;
+      --cream-deep: #FEF3C7;
+      --ink: #292524;
+      --ink-soft: #57534E;
+      --white: #FFFFFF;
+      --error: #B91C1C;
+      --radius: 14px;
+      --shadow: 0 4px 24px rgba(180, 83, 9, 0.10);
+      --font: "Avenir Next", Avenir, "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img, svg { display: block; max-width: 100%; }
+
+    a { color: var(--teal); }
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--teal);
+      outline-offset: 2px;
+    }
+
+    .wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem; top: -4rem;
+      background: var(--teal);
+      color: var(--white);
+      padding: 0.6rem 1rem;
+      border-radius: 0 0 8px 8px;
+      z-index: 100;
+      transition: top 0.15s ease;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ============ Header ============ */
+    header.site-header {
+      padding: 1.1rem 0;
+    }
+    .site-header .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .brand svg { width: 30px; height: 30px; }
+    .header-cta {
+      display: inline-block;
+      background: var(--teal);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: 999px;
+      transition: background 0.15s ease;
+    }
+    .header-cta:hover { background: var(--teal-deep); }
+
+    /* ============ Hero ============ */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #FEF3C7 0%, var(--cream) 55%, var(--cream) 100%);
+      padding: 1.5rem 0 4rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5.5vw, 3.4rem);
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      max-width: 21ch;
+      margin: 1.75rem auto 1rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--teal);
+    }
+    .hero .lede {
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+      color: var(--ink-soft);
+      max-width: 46ch;
+      margin: 0 auto 2.25rem;
+    }
+
+    /* --- Birds on a wire (pure SVG + CSS animation) --- */
+    .wire-scene {
+      width: min(680px, 92%);
+      margin: 0 auto;
+    }
+    .wire-scene svg { width: 100%; height: auto; overflow: visible; }
+
+    .bird {
+      transform-box: fill-box;
+      transform-origin: 50% 90%;
+    }
+    /* Gentle bob — each bird slightly out of phase */
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      45%      { transform: translateY(-2.5px) rotate(-1.2deg); }
+      70%      { transform: translateY(-1px) rotate(0.8deg); }
+    }
+    /* Occasional little tail flick */
+    @keyframes flick {
+      0%, 92%, 100% { transform: rotate(0deg); }
+      94%           { transform: rotate(9deg); }
+      97%           { transform: rotate(-4deg); }
+    }
+    /* The wire sways almost imperceptibly */
+    @keyframes sway {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(1.5px); }
+    }
+    .wire-group { animation: sway 7s ease-in-out infinite; }
+    .bird-1 { animation: bob 4.6s ease-in-out infinite; }
+    .bird-2 { animation: bob 5.3s ease-in-out infinite 0.9s; }
+    .bird-3 { animation: bob 4.1s ease-in-out infinite 1.7s; }
+    .bird-4 { animation: bob 5.8s ease-in-out infinite 2.4s; }
+    .tail {
+      transform-box: fill-box;
+      transform-origin: 20% 50%;
+      animation: flick 9s ease-in-out infinite;
+    }
+    .bird-2 .tail { animation-delay: 3s; }
+    .bird-3 .tail { animation-delay: 5.5s; }
+    .bird-4 .tail { animation-delay: 7s; }
+    /* Rising sun glow pulses softly */
+    @keyframes glow {
+      0%, 100% { opacity: 0.55; }
+      50%      { opacity: 0.85; }
+    }
+    .sun-glow { animation: glow 8s ease-in-out infinite; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .wire-group, .bird, .tail, .sun-glow { animation: none !important; }
+    }
+
+    /* ============ Waitlist form ============ */
+    .waitlist {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+    .waitlist form {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .waitlist label { text-align: left; }
+    .waitlist input[type="email"] {
+      flex: 1 1 260px;
+      font: inherit;
+      font-size: 1rem;
+      padding: 0.85rem 1.1rem;
+      border: 2px solid #E7D8AE;
+      border-radius: var(--radius);
+      background: var(--white);
+      color: var(--ink);
+      min-width: 0;
+    }
+    .waitlist input[type="email"]::placeholder { color: #A8A29E; }
+    .waitlist input[type="email"]:focus {
+      border-color: var(--teal);
+      outline: none;
+      box-shadow: 0 0 0 3px var(--teal-soft);
+    }
+    .waitlist button {
+      flex: 0 0 auto;
+      font: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--amber);
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.85rem 1.6rem;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+    .waitlist button:hover { background: var(--amber-deep); }
+    .waitlist button:active { transform: translateY(1px); }
+    .waitlist button[disabled] {
+      opacity: 0.65;
+      cursor: wait;
+    }
+    .form-note {
+      margin-top: 0.7rem;
+      font-size: 0.88rem;
+      color: var(--ink-soft);
+    }
+    .form-status {
+      margin-top: 0.85rem;
+      font-size: 0.98rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      padding: 0;
+      min-height: 1.4rem;
+    }
+    .form-status.success {
+      color: var(--teal-deep);
+      background: var(--teal-soft);
+      padding: 0.8rem 1rem;
+    }
+    .form-status.error {
+      color: var(--error);
+      background: #FEE2E2;
+      padding: 0.8rem 1rem;
+    }
+    .form-status.info {
+      color: var(--amber-deep);
+      background: var(--cream-deep);
+      padding: 0.8rem 1rem;
+    }
+
+    /* ============ Generic section styles ============ */
+    section { padding: 4.5rem 0; }
+    .section-kicker {
+      display: inline-block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber-deep);
+      margin-bottom: 0.6rem;
+    }
+    section h2 {
+      font-size: clamp(1.6rem, 3.6vw, 2.3rem);
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      margin-bottom: 0.9rem;
+    }
+    .section-intro {
+      color: var(--ink-soft);
+      max-width: 58ch;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ============ Problem stats ============ */
+    .problem { background: var(--white); }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+    .stat-card {
+      background: var(--cream);
+      border: 1px solid var(--cream-deep);
+      border-radius: var(--radius);
+      padding: 1.6rem 1.4rem;
+    }
+    .stat-card .stat-figure {
+      display: block;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--teal);
+      margin-bottom: 0.35rem;
+    }
+    .stat-card p { color: var(--ink-soft); font-size: 0.97rem; }
+
+    /* ============ How it works ============ */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      counter-reset: step;
+    }
+    .step {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.8rem 1.5rem;
+    }
+    .step .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.4rem; height: 2.4rem;
+      border-radius: 50%;
+      background: var(--amber);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .step h3 { font-size: 1.15rem; margin-bottom: 0.45rem; }
+    .step p { color: var(--ink-soft); font-size: 0.97rem; }
+
+    /* ============ Trust & safety ============ */
+    .trust { background: var(--teal); color: var(--white); }
+    .trust .section-kicker { color: var(--amber-soft); }
+    .trust .section-intro { color: var(--teal-soft); }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+    }
+    .trust-card {
+      background: var(--teal-deep);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.4rem;
+    }
+    .trust-card .trust-icon {
+      width: 2.2rem; height: 2.2rem;
+      margin-bottom: 0.85rem;
+    }
+    .trust-card h3 { font-size: 1.08rem; margin-bottom: 0.4rem; }
+    .trust-card p { color: var(--teal-soft); font-size: 0.95rem; }
+
+    /* ============ Species roadmap ============ */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+    .species-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      border: 1px solid var(--cream-deep);
+      padding: 1.6rem 1.4rem;
+      text-align: center;
+    }
+    .species-card .species-emoji {
+      font-size: 2.4rem;
+      line-height: 1;
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+    .species-card h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+    .species-card p { color: var(--ink-soft); font-size: 0.93rem; }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      padding: 0.28rem 0.75rem;
+      margin-top: 0.85rem;
+    }
+    .badge.now { background: var(--teal); color: var(--white); }
+    .badge.later { background: var(--cream-deep); color: var(--amber-deep); }
+
+    /* ============ Bottom CTA ============ */
+    .bottom-cta {
+      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+      text-align: center;
+    }
+    .bottom-cta h2 { max-width: 24ch; margin-left: auto; margin-right: auto; }
+    .bottom-cta .section-intro { margin-left: auto; margin-right: auto; }
+
+    /* ============ Footer ============ */
+    footer {
+      background: var(--ink);
+      color: #D6D3D1;
+      padding: 2.75rem 0;
+      text-align: center;
+    }
+    footer .brandline {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--amber-soft);
+      margin-bottom: 0.6rem;
+    }
+    footer p { font-size: 0.9rem; }
+    footer a { color: var(--teal-soft); }
+
+    @media (max-width: 560px) {
+      section { padding: 3.25rem 0; }
+      .waitlist form { flex-direction: column; }
+      .waitlist button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="LonelyBirds home">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <circle cx="16" cy="16" r="15" fill="#0F766E"/>
+          <path d="M9 20c3-8 10-9 14-8-1 2-2 3-4 3.6.5 2.4-1 6.4-6 6.4H8l1-2z" fill="#FFFBEB"/>
+          <circle cx="19.5" cy="13.5" r="1" fill="#292524"/>
+        </svg>
+        LonelyBirds
+      </a>
+      <a class="header-cta" href="#waitlist">Join the waitlist</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap">
+        <div class="wire-scene" role="img" aria-label="Four small birds perched on a telephone wire at dawn">
+          <svg viewBox="0 0 680 190" aria-hidden="true" focusable="false">
+            <!-- Rising sun -->
+            <circle class="sun-glow" cx="560" cy="80" r="58" fill="#FDE68A" opacity="0.6"/>
+            <circle cx="560" cy="80" r="34" fill="#F59E0B" opacity="0.9"/>
+            <g class="wire-group">
+              <!-- The wire -->
+              <path d="M0 128 Q 340 152 680 124" fill="none" stroke="#57534E" stroke-width="3" stroke-linecap="round"/>
+              <!-- Bird 1 -->
+              <g class="bird bird-1">
+                <path class="tail" d="M120 116 l-24 -10 4 12 z" fill="#115E59"/>
+                <ellipse cx="132" cy="112" rx="17" ry="13" fill="#0F766E"/>
+                <circle cx="146" cy="101" r="8.5" fill="#0F766E"/>
+                <path d="M153.5 100 l9 2.6 -9 2.6 z" fill="#F59E0B"/>
+                <circle cx="148.5" cy="99" r="1.6" fill="#FFFBEB"/>
+                <line x1="128" y1="124" x2="128" y2="132" stroke="#57534E" stroke-width="2"/>
+                <line x1="137" y1="124" x2="137" y2="132" stroke="#57534E" stroke-width="2"/>
+              </g>
+              <!-- Bird 2 (smaller, amber) -->
+              <g class="bird bird-2">
+                <path class="tail" d="M236 126 l-20 -8 3 10 z" fill="#B45309"/>
+                <ellipse cx="246" cy="122" rx="14" ry="11" fill="#F59E0B"/>
+                <circle cx="258" cy="113" r="7" fill="#F59E0B"/>
+                <path d="M264.5 112 l7.5 2.2 -7.5 2.2 z" fill="#115E59"/>
+                <circle cx="260" cy="111.5" r="1.4" fill="#292524"/>
+                <line x1="242" y1="132" x2="242" y2="139" stroke="#57534E" stroke-width="2"/>
+                <line x1="250" y1="132" x2="250" y2="139" stroke="#57534E" stroke-width="2"/>
+              </g>
+              <!-- Bird 3 (faces left, teal) -->
+              <g class="bird bird-3">
+                <path class="tail" d="M448 126 l24 -10 -4 12 z" fill="#115E59"/>
+                <ellipse cx="436" cy="122" rx="16" ry="12" fill="#0F766E"/>
+                <circle cx="423" cy="112" r="8" fill="#0F766E"/>
+                <path d="M415.5 111 l-9 2.4 9 2.4 z" fill="#F59E0B"/>
+                <circle cx="421" cy="110" r="1.5" fill="#FFFBEB"/>
+                <line x1="432" y1="133" x2="432" y2="141" stroke="#57534E" stroke-width="2"/>
+                <line x1="441" y1="133" x2="441" y2="141" stroke="#57534E" stroke-width="2"/>
+              </g>
+              <!-- Bird 4 (small, amber) -->
+              <g class="bird bird-4">
+                <path class="tail" d="M520 120 l-19 -7 3 9 z" fill="#B45309"/>
+                <ellipse cx="530" cy="117" rx="13" ry="10" fill="#F59E0B"/>
+                <circle cx="541" cy="109" r="6.5" fill="#F59E0B"/>
+                <path d="M547 108 l7 2 -7 2 z" fill="#115E59"/>
+                <circle cx="543" cy="107.5" r="1.3" fill="#292524"/>
+                <line x1="526" y1="126" x2="526" y2="133" stroke="#57534E" stroke-width="2"/>
+                <line x1="534" y1="126" x2="534" y2="133" stroke="#57534E" stroke-width="2"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+
+        <h1 id="hero-title">Your bird is <em>social</em>. Its days shouldn't be spent alone.</h1>
+        <p class="lede">
+          LonelyBirds connects companion birds over live video while you're at work —
+          scheduled or on demand, between owners who've approved each other. Real company,
+          no second cage.
+        </p>
+
+        <div class="waitlist" id="waitlist">
+          <form id="waitlist-form" novalidate>
+            <label class="visually-hidden" for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com"
+                   autocomplete="email" inputmode="email" required
+                   aria-describedby="form-status">
+            <button type="submit" id="waitlist-submit">Join the waitlist</button>
+          </form>
+          <p class="form-note">Bird owners get first access to the beta. No spam — one email when we launch.</p>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROBLEM STATS ============ -->
+    <section class="problem" aria-labelledby="problem-title">
+      <div class="wrap">
+        <span class="section-kicker">The problem</span>
+        <h2 id="problem-title">Isolation hurts birds in ways we can measure</h2>
+        <p class="section-intro">
+          Parrots, cockatiels, budgies and canaries are flock animals. When the flock is a
+          single human who leaves every morning, the silence takes a toll.
+        </p>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-figure">8+ hrs</span>
+            <p>spent completely alone each workday by millions of companion birds worldwide.</p>
+          </div>
+          <div class="stat-card">
+            <span class="stat-figure">1 in 6</span>
+            <p>captive parrots shows feather-plucking — a self-harm behaviour strongly linked to chronic isolation and stress.</p>
+          </div>
+          <div class="stat-card">
+            <span class="stat-figure">Flock-wired</span>
+            <p>in the wild these species live in constant vocal contact with dozens of others. Solitude is not their natural state.</p>
+          </div>
+          <div class="stat-card">
+            <span class="stat-figure">2nd bird?</span>
+            <p>often infeasible: cost, space, and disease-quarantine risk stop most owners from simply adding a companion.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <span class="section-kicker">How it works</span>
+        <h2 id="how-title">Three steps to a flock</h2>
+        <p class="section-intro">
+          An old iPhone or iPad by the cage becomes your bird's window to a friend.
+          You stay in control from your own phone.
+        </p>
+        <div class="steps">
+          <div class="step">
+            <span class="step-num" aria-hidden="true">1</span>
+            <h3>Set up the perch</h3>
+            <p>Mount a spare iPhone or iPad near the cage and pair it with a one-time 6-digit code. It becomes your bird's dedicated companion terminal — always plugged in, always ready.</p>
+          </div>
+          <div class="step">
+            <span class="step-num" aria-hidden="true">2</span>
+            <h3>Find a feathered friend</h3>
+            <p>Create your bird's profile and browse matches by species and schedule overlap. Both owners must approve before any session can ever happen.</p>
+          </div>
+          <div class="step">
+            <span class="step-num" aria-hidden="true">3</span>
+            <h3>Let them chatter</h3>
+            <p>Sessions start on schedule or with one tap from your phone. Two birds see and hear each other over live, low-latency video — and you can peek in any time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TRUST & SAFETY ============ -->
+    <section class="trust" aria-labelledby="trust-title">
+      <div class="wrap">
+        <span class="section-kicker">Trust &amp; safety</span>
+        <h2 id="trust-title">Built cage-first, privacy-first</h2>
+        <p class="section-intro">
+          A camera in your home should earn its place. Here's how LonelyBirds does.
+        </p>
+        <div class="trust-grid">
+          <div class="trust-card">
+            <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="#FDE68A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/><line x1="4" y1="2" x2="20" y2="22"/>
+            </svg>
+            <h3>No video ever stored</h3>
+            <p>Streams flow peer-to-peer between the two terminals and vanish the moment a session ends. No recordings, no clips, no server-side media — by architecture, not policy.</p>
+          </div>
+          <div class="trust-card">
+            <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="#FDE68A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/>
+            </svg>
+            <h3>Mutual consent, always</h3>
+            <p>Both owners must approve a connection before a single frame is exchanged. No approval, no session — by any means.</p>
+          </div>
+          <div class="trust-card">
+            <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="#FDE68A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <h3>You set the hours</h3>
+            <p>Sessions only run inside the availability windows you define, and end automatically at the boundary or a max duration. The terminal never runs indefinitely.</p>
+          </div>
+          <div class="trust-card">
+            <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="#FDE68A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/>
+            </svg>
+            <h3>End it instantly</h3>
+            <p>Either owner can stop a live session or pause, block, or delete a connection at any moment, from anywhere. Your home, your rules.</p>
+          </div>
+          <div class="trust-card">
+            <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="#FDE68A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <h3>Report &amp; review</h3>
+            <p>Flag any connection with one tap. Flagged connections are suspended immediately, pending human review.</p>
+          </div>
+          <div class="trust-card">
+            <svg class="trust-icon" viewBox="0 0 24 24" fill="none" stroke="#FDE68A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+            <h3>Live view for owners only</h3>
+            <p>You can silently peek at your own bird's live session to check everything's fine. Nobody outside the two approved households can ever watch.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SPECIES ROADMAP ============ -->
+    <section class="roadmap" aria-labelledby="roadmap-title">
+      <div class="wrap">
+        <span class="section-kicker">Species roadmap</span>
+        <h2 id="roadmap-title">Birds first. Friends of all kinds next.</h2>
+        <p class="section-intro">
+          We're launching with birds because they vocalise and genuinely respond to on-screen
+          companions. But loneliness isn't species-specific — and neither is our roadmap.
+        </p>
+        <div class="roadmap-grid">
+          <div class="species-card">
+            <span class="species-emoji" aria-hidden="true">🦜</span>
+            <h3>Birds</h3>
+            <p>Parrots, cockatiels, budgies, canaries — chatty, social, screen-responsive.</p>
+            <span class="badge now">Launching now</span>
+          </div>
+          <div class="species-card">
+            <span class="species-emoji" aria-hidden="true">🐱</span>
+            <h3>Cats</h3>
+            <p>Window-watchers by nature. Feline session UX is on the drawing board.</p>
+            <span class="badge later">Coming later</span>
+          </div>
+          <div class="species-card">
+            <span class="species-emoji" aria-hidden="true">🐶</span>
+            <h3>Dogs</h3>
+            <p>Separation anxiety is real. A familiar face and voice can help.</p>
+            <span class="badge later">Coming later</span>
+          </div>
+          <div class="species-card">
+            <span class="species-emoji" aria-hidden="true">🐰</span>
+            <h3>Rabbits</h3>
+            <p>Bonded by nature, often housed alone. We haven't forgotten them.</p>
+            <span class="badge later">Coming later</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BOTTOM CTA ============ -->
+    <section class="bottom-cta" aria-labelledby="cta-title">
+      <div class="wrap">
+        <span class="section-kicker">Early access</span>
+        <h2 id="cta-title">Give your bird a flock</h2>
+        <p class="section-intro">
+          The beta opens to a small group of bird owners first.
+          Join the waitlist above and we'll save your bird a perch.
+        </p>
+        <a class="header-cta" href="#waitlist">Join the waitlist</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p class="brandline">Every bird deserves a flock.</p>
+      <p>&copy; 2026 LonelyBirds &middot; <a href="mailto:hello@lonelybirds.app">hello@lonelybirds.app</a></p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      // These placeholders are substituted at deploy time (see landing/README.md).
+      var SUPABASE_URL = "__SUPABASE_URL__";
+      var SUPABASE_ANON_KEY = "__SUPABASE_ANON_KEY__";
+
+      // Detect unsubstituted placeholders without this check itself being
+      // rewritten by a naive find-and-replace: build the sentinel from parts.
+      var SENTINEL = "__" + "SUPABASE";
+      function isConfigured() {
+        return (
+          SUPABASE_URL.indexOf(SENTINEL) === -1 &&
+          SUPABASE_ANON_KEY.indexOf(SENTINEL) === -1 &&
+          SUPABASE_URL.length > 0
+        );
+      }
+
+      var form = document.getElementById("waitlist-form");
+      var emailInput = document.getElementById("email");
+      var submitBtn = document.getElementById("waitlist-submit");
+      var statusEl = document.getElementById("form-status");
+
+      function setStatus(kind, message) {
+        statusEl.className = "form-status" + (kind ? " " + kind : "");
+        statusEl.textContent = message || "";
+      }
+
+      function isValidEmail(value) {
+        // Pragmatic client-side check: something@something.tld, no whitespace.
+        return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+      }
+
+      function showSuccess() {
+        // Inline confirmation state: swap the form for a thank-you message.
+        form.hidden = true;
+        setStatus(
+          "success",
+          "You're on the list! We'll email you when the beta opens. Your bird's perch is saved."
+        );
+      }
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        setStatus("", "");
+
+        var email = emailInput.value.trim();
+        if (!isValidEmail(email)) {
+          setStatus("error", "Please enter a valid email address, like you@example.com.");
+          emailInput.focus();
+          return;
+        }
+
+        if (!isConfigured()) {
+          // Graceful fallback when the backend isn't wired up yet.
+          setStatus(
+            "info",
+            "Signups aren't open quite yet — email hello@lonelybirds.app and we'll add you to the list by hand."
+          );
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Joining…";
+
+        fetch(SUPABASE_URL.replace(/\/+$/, "") + "/rest/v1/waitlist_signups", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify({ email: email, source: "landing" })
+        })
+          .then(function (response) {
+            if (response.ok) {
+              showSuccess();
+              return;
+            }
+            if (response.status === 409) {
+              // Unique-constraint violation: already signed up. Treat as success.
+              showSuccess();
+              return;
+            }
+            throw new Error("Unexpected response: " + response.status);
+          })
+          .catch(function () {
+            setStatus(
+              "error",
+              "Something went wrong on our end. Please try again in a minute, or email hello@lonelybirds.app."
+            );
+          })
+          .then(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Join the waitlist";
+          });
+      });
+    })();
+  </script>
+</body>
+</html>
